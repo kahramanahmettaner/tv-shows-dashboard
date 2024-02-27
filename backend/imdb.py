@@ -8,6 +8,14 @@ class ImdbShow:
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
     }
 
+    def __init__(self, title):
+        self.title = title
+        self.season_url = f"https://www.imdb.com/title/{title}/episodes/?season="
+        self.cast_url = f'https://www.imdb.com/title/{title}/fullcredits'
+
+        self.show_name = None
+        self.seasons_count = None
+
     @classmethod
     def search_for_shows(cls, query):
         req_url = cls.search_url + query
@@ -46,3 +54,16 @@ class ImdbShow:
                 })
 
         return query_results
+
+    def fetch_show_data(self):
+        req_url = self.season_url + '1'
+        result = requests.get(req_url, headers=self.headers)
+        soup = BeautifulSoup(result.content, features="html.parser")
+
+        h2_element = soup.find_all("h2",  {'data-testid': 'subtitle'})[0]
+        self.show_name = h2_element.text
+
+        season_numbers_container = soup.find_all("ul", class_="ipc-tabs ipc-tabs--base ipc-tabs--align-left")[0]
+        season_numbers = season_numbers_container.find_all('a')
+        seasons_count = season_numbers[-1].text
+        self.seasons_count = int(seasons_count)
