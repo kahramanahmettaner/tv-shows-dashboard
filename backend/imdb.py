@@ -55,15 +55,20 @@ class ImdbShow:
 
         return query_results
 
+    def parse_show_name(self, soup):
+        h2_element = soup.find_all("h2",  {'data-testid': 'subtitle'})[0]
+        self.show_name = h2_element.text
+
+    def parse_seasons_count(self, soup):
+        season_numbers_container = soup.find_all("ul", class_="ipc-tabs ipc-tabs--base ipc-tabs--align-left")[0]
+        season_numbers = season_numbers_container.find_all('a')
+        seasons_count = season_numbers[-1].text
+        self.seasons_count = int(seasons_count)
+
     def fetch_show_data(self):
         req_url = self.season_url + '1'
         result = requests.get(req_url, headers=self.headers)
         soup = BeautifulSoup(result.content, features="html.parser")
 
-        h2_element = soup.find_all("h2",  {'data-testid': 'subtitle'})[0]
-        self.show_name = h2_element.text
-
-        season_numbers_container = soup.find_all("ul", class_="ipc-tabs ipc-tabs--base ipc-tabs--align-left")[0]
-        season_numbers = season_numbers_container.find_all('a')
-        seasons_count = season_numbers[-1].text
-        self.seasons_count = int(seasons_count)
+        self.parse_seasons_count(soup)
+        self.parse_show_name(soup)
