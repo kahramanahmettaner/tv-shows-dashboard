@@ -8,17 +8,17 @@ class ImdbShow:
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
     }
 
-    def __init__(self, title):
-        self.title = title
-        self.season_url = f"https://www.imdb.com/title/{title}/episodes/?season="
-        self.cast_url = f'https://www.imdb.com/title/{title}/fullcredits'
+    def __init__(self, imdb_id):
+        self.imdb_id = imdb_id
+        self.season_url = f"https://www.imdb.com/title/{imdb_id}/episodes/?season="
+        self.cast_url = f'https://www.imdb.com/title/{imdb_id}/fullcredits'
 
         self.show_name = None
         self.seasons_count = None
 
     @classmethod
-    def search_for_shows(cls, query):
-        req_url = cls.search_url + query
+    def search_for_shows(cls, show_name):
+        req_url = cls.search_url + show_name
         result = requests.get(req_url, headers=cls.headers)
         soup = BeautifulSoup(result.content, features="html.parser")
 
@@ -27,7 +27,7 @@ class ImdbShow:
 
         li_elements = ul.find_all('li', class_='find-title-result')
 
-        query_results = []
+        shows = []
         for li in li_elements:
             img = li.find('img')['srcset']
             link = li.find('a')['href']
@@ -44,7 +44,7 @@ class ImdbShow:
             actors = details[1].find('li').text
 
             if media_type is not None and media_type.lower() == 'tv series':
-                query_results.append({
+                shows.append({
                     'imdb_id': imdb_id,
                     'name': name,
                     'img': img,
@@ -53,7 +53,7 @@ class ImdbShow:
                     'actors': actors
                 })
 
-        return query_results
+        return shows
 
     def parse_show_name(self, soup):
         h2_element = soup.find_all("h2",  {'data-testid': 'subtitle'})[0]
