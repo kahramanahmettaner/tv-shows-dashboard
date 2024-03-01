@@ -30,4 +30,23 @@ def shows_by_title():
     return jsonify(query_results), 200
 
 
+@app.route('/show-details', methods=['GET'])
+def get_show_details():
+    imdb_id = request.args.get('imdb_id')
+    if not imdb_id:
+        return jsonify({"error": "imdb_id parameter is missing"}), 400
+
+    try:
+        show = ImdbShow(imdb_id)
+        show.fetch_show_data()
+        show_details = {
+            "imdb_id": show.imdb_id,
+            "show_name": show.show_name,
+            "seasons_count": show.seasons_count
+        }
+        return jsonify(show_details), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 app.run()
