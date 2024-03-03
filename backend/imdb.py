@@ -95,3 +95,33 @@ class ImdbShow:
 
         except Exception as e:
             raise Exception("An unexpected error occurred:", e)
+
+    def fetch_season_data(self, season_number):
+
+        curr_url = self.season_url + str(season_number)
+        result = requests.get(curr_url, headers=self.headers)
+        soup_season = BeautifulSoup(result.content, features="html.parser")
+        episodes = soup_season.find_all("article", class_="episode-item-wrapper")
+
+        season_info = []
+        for _, current_episode in enumerate(episodes):
+            img = current_episode.find_all("img")
+            episode = current_episode.find_all("h4")
+            rating = current_episode.find_all("span", class_="ratingGroup--imdb-rating")
+            vote_count = current_episode.find_all("span", class_="ipc-rating-star--voteCount")
+            description = current_episode.find_all("div", class_="ipc-html-content-inner-div")
+
+            if len(img) == 0 or len(episode) == 0 or len(rating) == 0 or len(vote_count) == 0 or len(description) == 0:
+                print(f"Error: {season_number}. season data not found! ")
+
+            else:
+                current_episode_dict = {
+                    "image_link": img[0]['srcset'],
+                    "episode": episode[0].text,
+                    "imdb_rating": rating[0]['aria-label'],
+                    "vote_count": vote_count[0].text,
+                    "description": description[0].text
+                }
+                season_info.append(current_episode_dict)
+
+        return season_info
