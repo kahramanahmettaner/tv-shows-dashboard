@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import time
 
 
 class ImdbShow:
@@ -96,7 +97,14 @@ class ImdbShow:
         except Exception as e:
             raise Exception("An unexpected error occurred:", e)
 
-    def fetch_season_data(self, season_number):
+    def fetch_season_data(self, season_number, limit_of_attempts=10):
+
+        # sometimes, the request succeeds, but we don't get season data
+        # that's why we need to try to fetch the season data multiple times, in case we don't get it
+        # because of this, determine a limit for number of attempts
+
+        if limit_of_attempts <= 0:
+            return {"error": "Unable to fetch season data"}, 500
 
         curr_url = self.season_url + str(season_number)
         result = requests.get(curr_url, headers=self.headers)
@@ -124,4 +132,14 @@ class ImdbShow:
                 }
                 season_info.append(current_episode_dict)
 
+        if len(season_info) == 0:
+            print(f"Error: {season_number}. fail! ")
+
+            # Wait a bit to not overload the server with too many requests in a short time period
+            time.sleep(2)
+
+            # Call the function recursively until the limit of attempts is achieved
+            return self.fetch_season_data(season_number, limit_of_attempts-1)
+
+        print(f"Success: {season_number}")
         return season_info
