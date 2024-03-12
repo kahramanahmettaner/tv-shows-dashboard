@@ -64,4 +64,18 @@ def get_season_details():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/show-cast', methods=['GET'])
+def get_show_cast():
+    imdb_id = request.args.get('imdb_id')
+    if not imdb_id:
+        return jsonify({"error": "imdb_id parameter is missing"}), 400
+
+    try:
+        show = ImdbShow(imdb_id)
+        cast = show.fetch_cast()
+        return jsonify(cast), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 app.run()

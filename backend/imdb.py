@@ -143,3 +143,14 @@ class ImdbShow:
 
         print(f"Success: {season_number}")
         return season_info
+
+    def fetch_cast(self):
+        result = requests.get(self.cast_url, headers=self.headers)
+        soup = BeautifulSoup(result.content, features="html.parser")
+
+        content = soup.find('div', {'id': 'fullcredits_content'})
+
+        cast = []
+        # Extract cast information from IMDb full credits page
+
+        return cast
