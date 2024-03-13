@@ -151,6 +151,27 @@ class ImdbShow:
         content = soup.find('div', {'id': 'fullcredits_content'})
 
         cast = []
-        # Extract cast information from IMDb full credits page
+        table_cast = content.find('table', class_='cast_list')
+        tr_elements = table_cast.find_all('tr')
+        for tr in tr_elements:
+            td_elements = tr.find_all('td')
+            if len(td_elements) == 4:
+                td_name = td_elements[1]
+                td_character = td_elements[3]
+
+                actor = td_name.find('a').text.replace('\n', '')
+
+                a_elements_character = td_character.find_all('a')
+
+                character = a_elements_character[0].text if len(a_elements_character) >= 1 else None
+
+                character_info = a_elements_character[1].text if len(a_elements_character) >= 2 else None
+                episodes_count = character_info.split(',')[0] if character_info is not None else '0 episodes'
+
+                cast.append({
+                    'name': actor,
+                    'character': character,
+                    'episodes_count': episodes_count
+                })
 
         return cast
