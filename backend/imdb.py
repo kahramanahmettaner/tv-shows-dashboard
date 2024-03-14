@@ -150,6 +150,25 @@ class ImdbShow:
 
         content = soup.find('div', {'id': 'fullcredits_content'})
 
+        # Extract writers from IMDb full credits page
+        writers = []
+
+        h4_writers = content.find('h4', {'id': 'writer'})
+        table_writers = h4_writers.find_next_sibling('table')
+        tr_writers = table_writers.find_all('tr')
+
+        for tr in tr_writers:
+            td_name = tr.find('td', class_='name')
+            td_detail = tr.find('td', class_='credit')
+
+            name = td_name.find('a').text.replace('\n', '')
+            detail = td_detail.text.replace('\n', '')
+            writers.append({
+                'name': name,
+                'episodes_count': detail
+            })
+
+        # Extract cast from IMDb full credits page
         cast = []
         table_cast = content.find('table', class_='cast_list')
         tr_elements = table_cast.find_all('tr')
@@ -174,4 +193,7 @@ class ImdbShow:
                     'episodes_count': episodes_count
                 })
 
-        return cast
+        return {
+            'cast': cast,
+            'writers': writers,
+        }
