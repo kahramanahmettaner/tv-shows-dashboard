@@ -150,24 +150,6 @@ class ImdbShow:
 
         content = soup.find('div', {'id': 'fullcredits_content'})
 
-        # Extract writers from IMDb full credits page
-        writers = []
-
-        h4_writers = content.find('h4', {'id': 'writer'})
-        table_writers = h4_writers.find_next_sibling('table')
-        tr_writers = table_writers.find_all('tr')
-
-        for tr in tr_writers:
-            td_name = tr.find('td', class_='name')
-            td_detail = tr.find('td', class_='credit')
-
-            name = td_name.find('a').text.replace('\n', '')
-            detail = td_detail.text.replace('\n', '')
-            writers.append({
-                'name': name,
-                'episodes_count': detail
-            })
-
         # Extract cast from IMDb full credits page
         cast = []
         table_cast = content.find('table', class_='cast_list')
@@ -193,7 +175,44 @@ class ImdbShow:
                     'episodes_count': episodes_count
                 })
 
+        # Extract writers from IMDb full credits page
+        writers = []
+
+        h4_writers = content.find('h4', {'id': 'writer'})
+        table_writers = h4_writers.find_next_sibling('table')
+        tr_writers = table_writers.find_all('tr')
+
+        for tr in tr_writers:
+            td_name = tr.find('td', class_='name')
+            td_detail = tr.find('td', class_='credit')
+
+            name = td_name.find('a').text.replace('\n', '')
+            detail = td_detail.text.replace('\n', '')
+            writers.append({
+                'name': name,
+                'episodes_count': detail
+            })
+
+        # Extract directors from IMDB full credits page
+        directors = []
+
+        h4_directors = content.find('h4', {'id': 'director'})
+        table_directors = h4_directors.find_next_sibling('table')
+        tr_directors = table_directors.find_all('tr')
+
+        for tr in tr_directors:
+            td_name = tr.find('td', class_='name')
+            td_detail = tr.find('td', class_='credit')
+
+            name = td_name.find('a').text.replace('\n', '')
+            detail = td_detail.text.replace('\n', '')
+            directors.append({
+                'name': name,
+                'episodes_count': detail
+            })
+
         return {
             'cast': cast,
             'writers': writers,
+            'directors': directors
         }
