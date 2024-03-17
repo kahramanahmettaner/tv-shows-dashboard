@@ -147,12 +147,23 @@ class ImdbShow:
     def fetch_cast(self):
         result = requests.get(self.cast_url, headers=self.headers)
         soup = BeautifulSoup(result.content, features="html.parser")
-
         content = soup.find('div', {'id': 'fullcredits_content'})
 
-        # Extract cast from IMDb full credits page
+        # Extract cast, writers and directors from IMDb full credits page
+        cast = self.extract_cast(content)
+        writers = self.extract_writers(content)
+        directors = self.extract_directors(content)
+
+        return {
+            'cast': cast,
+            'writers': writers,
+            'directors': directors
+        }
+
+    @staticmethod
+    def extract_cast(page_content):
         cast = []
-        table_cast = content.find('table', class_='cast_list')
+        table_cast = page_content.find('table', class_='cast_list')
         tr_elements = table_cast.find_all('tr')
         for tr in tr_elements:
             td_elements = tr.find_all('td')
@@ -175,10 +186,13 @@ class ImdbShow:
                     'episodes_count': episodes_count
                 })
 
-        # Extract writers from IMDb full credits page
+        return cast
+
+    @staticmethod
+    def extract_writers(page_content):
         writers = []
 
-        h4_writers = content.find('h4', {'id': 'writer'})
+        h4_writers = page_content.find('h4', {'id': 'writer'})
         table_writers = h4_writers.find_next_sibling('table')
         tr_writers = table_writers.find_all('tr')
 
@@ -193,10 +207,13 @@ class ImdbShow:
                 'episodes_count': detail
             })
 
-        # Extract directors from IMDB full credits page
+        return writers
+
+    @staticmethod
+    def extract_directors(page_content):
         directors = []
 
-        h4_directors = content.find('h4', {'id': 'director'})
+        h4_directors = page_content.find('h4', {'id': 'director'})
         table_directors = h4_directors.find_next_sibling('table')
         tr_directors = table_directors.find_all('tr')
 
@@ -211,8 +228,4 @@ class ImdbShow:
                 'episodes_count': detail
             })
 
-        return {
-            'cast': cast,
-            'writers': writers,
-            'directors': directors
-        }
+        return directors
