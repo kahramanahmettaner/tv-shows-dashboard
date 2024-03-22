@@ -1,8 +1,10 @@
+import { Routes, Route } from "react-router-dom"
+
 function App() {
   return (
-    <div>
-      App
-    </div>
+    <Routes>
+      <Route path="/" element={<h1>App</h1>} />
+    </Routes>
   )
 }
 
