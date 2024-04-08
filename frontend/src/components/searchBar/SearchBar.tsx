@@ -20,11 +20,15 @@ const SearchBar = ({ setLoading, setErrorMessage }: SearchBarProps) => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
+        setErrorMessage('')
         setLoading(true)
 
         // TODO: implement
         // fetch shows by showname
-        setTimeout(()  => {setErrorMessage('Not Implemented')}, 2000);   
+        setTimeout(()  => {
+            setErrorMessage('Not Implemented')
+            setLoading(false)
+        }, 2000);   
     }
 
 
