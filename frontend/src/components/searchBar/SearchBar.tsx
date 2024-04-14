@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import { getShows } from '../../api'
 
 interface SearchBarProps {
     setLoading: Dispatch<SetStateAction<boolean>>;
@@ -18,17 +19,27 @@ const SearchBar = ({ setLoading, setErrorMessage }: SearchBarProps) => {
         setInput(currentInput)
     }   
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
         setErrorMessage('')
         setLoading(true)
 
-        // TODO: implement
         // fetch shows by showname
-        setTimeout(()  => {
-            setErrorMessage('Not Implemented')
+       getShows(input)
+       .then( shows => {
+            if (shows) console.log(shows)
+            // TODO: implement
+            // setState for shows
+
+            setErrorMessage('')
             setLoading(false)
-        }, 2000);   
+        })
+        .catch( errorMessage => {
+            console.error(errorMessage)
+
+            setErrorMessage(errorMessage)
+            setLoading(false)
+        })
     }
 
 
