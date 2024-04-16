@@ -15,15 +15,15 @@ def home():
 def shows_by_title():
     show_name = request.args.get('show_name')
     if show_name is None:
-        return jsonify({"error": "show_name parameter is missing"}), 400
+        return jsonify({"message": "show_name parameter is missing"}), 400
 
     try:
         query_results = ImdbShow.search_for_shows(show_name)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"message": str(e)}), 500
 
     if query_results is None:
-        return jsonify({"error": "An error occurred while searching for shows"}), 500
+        return jsonify({"message": "An error occurred while searching for shows"}), 500
 
     if not query_results:
         return jsonify({"message": "No shows found for the provided show_name"}), 404
@@ -36,7 +36,7 @@ def shows_by_title():
 def get_show_details():
     imdb_id = request.args.get('imdb_id')
     if not imdb_id:
-        return jsonify({"error": "imdb_id parameter is missing"}), 400
+        return jsonify({"message": "imdb_id parameter is missing"}), 400
 
     try:
         show = ImdbShow(imdb_id)
@@ -48,7 +48,7 @@ def get_show_details():
         }
         return jsonify(show_details), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"message": str(e)}), 500
 
 
 @app.route('/season-details', methods=['GET'])
@@ -56,28 +56,28 @@ def get_season_details():
     imdb_id = request.args.get('imdb_id')
     season_number = request.args.get('season_number')
     if not imdb_id or not season_number:
-        return jsonify({"error": "imdb_id or season_number parameter is missing"}), 400
+        return jsonify({"message": "imdb_id or season_number parameter is missing"}), 400
 
     try:
         show = ImdbShow(imdb_id)
         season_data = show.fetch_season_data(int(season_number))
         return jsonify(season_data), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"message": str(e)}), 500
 
 
 @app.route('/show-cast', methods=['GET'])
 def get_show_cast():
     imdb_id = request.args.get('imdb_id')
     if not imdb_id:
-        return jsonify({"error": "imdb_id parameter is missing"}), 400
+        return jsonify({"message": "imdb_id parameter is missing"}), 400
 
     try:
         show = ImdbShow(imdb_id)
         cast = show.fetch_cast()
         return jsonify(cast), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"message": str(e)}), 500
 
 
 app.run()
