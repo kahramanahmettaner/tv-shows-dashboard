@@ -1,19 +1,10 @@
 import { baseUrl } from './index';
+import { IShow } from '../types';
 
-interface Show {
-    imdb_id: string;
-    name: string;
-    actors: string;
-    year: string;
-    type: string;
-    img: string;
-}
-
-
-export const getShows = async (show_name: string): Promise<Show[]> => {
+export const getShows = async (show_name: string): Promise<IShow[]> => {
     const url = baseUrl + `/shows` + `?show_name=${encodeURIComponent(show_name)}`;
 
-    return new Promise<Show[]>((resolve, reject) => {
+    return new Promise<IShow[]>((resolve, reject) => {
 
         fetch(url)
         .then( response => {
