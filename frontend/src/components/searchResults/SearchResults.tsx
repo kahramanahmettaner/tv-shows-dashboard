@@ -1,16 +1,8 @@
 import styles from './searchResults.module.css'
+import { useSearchShowStore } from '../../store/searchShowStore';
 
-interface SearchResultsProps {
-    isLoading: boolean;
-    errorMessage: string;
-}
-
-
-const SearchResults = ({ isLoading, errorMessage }: SearchResultsProps) => {
-
-    // TODO: implement
-    // get the fetched tv shows
-    const shows = [] 
+const SearchResults = () => {
+    const { shows, loading, errorMessage } = useSearchShowStore( state => state )
 
     const loadingContent = <p>Loading...</p>
 
@@ -21,14 +13,14 @@ const SearchResults = ({ isLoading, errorMessage }: SearchResultsProps) => {
     return (
         <>
             {/* Display loading message while loading */}
-            {isLoading && loadingContent}
+            {loading && loadingContent}
 
             {/* Display error message if there's an error */}
             {errorMessage && errorContent}
 
             {/* Display fetched shows when there is no error and not loading */}
             {/* Display nothing if there is no show to display */}
-            {!isLoading && !errorMessage && (
+            {!loading && !errorMessage && (
                 shows.length == 0 || showsContent
             )}
         </>

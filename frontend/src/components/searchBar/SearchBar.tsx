@@ -1,18 +1,15 @@
 import styles from './searchBar.module.css'
-import { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
-import { getShows } from '../../api'
+import { useSearchShowStore } from '../../store/searchShowStore'
 
-interface SearchBarProps {
-    setLoading: Dispatch<SetStateAction<boolean>>;
-    setErrorMessage: Dispatch<SetStateAction<string>>;
-}
 
-const SearchBar = ({ setLoading, setErrorMessage }: SearchBarProps) => {
+const SearchBar = () => {
 
     const [input, setInput] = useState('')
+    
+    const fetchShows = useSearchShowStore( state => state.fetchShows )
 
     const handleInput = (e: any) => {
         const currentInput = e.target.value
@@ -21,27 +18,8 @@ const SearchBar = ({ setLoading, setErrorMessage }: SearchBarProps) => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        setErrorMessage('')
-        setLoading(true)
-
-        // fetch shows by showname
-       getShows(input)
-       .then( shows => {
-            if (shows) console.log(shows)
-            // TODO: implement
-            // setState for shows
-
-            setErrorMessage('')
-            setLoading(false)
-        })
-        .catch( errorMessage => {
-            console.error(errorMessage)
-
-            setErrorMessage(errorMessage)
-            setLoading(false)
-        })
+        fetchShows(input)
     }
-
 
     return (
         <form className={styles["input-wrapper"]}>
