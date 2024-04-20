@@ -1,5 +1,7 @@
 import styles from './searchResults.module.css'
 import { useSearchShowStore } from '../../store/searchShowStore';
+import SearchResultsShowCard from '../searchResultsShowCard/searchResultsShowCard';
+import { IShow } from '../../types';
 
 const SearchResults = () => {
     const { shows, loading, errorMessage } = useSearchShowStore( state => state )
@@ -8,7 +10,13 @@ const SearchResults = () => {
 
     const errorContent = <p>Error: {errorMessage}</p>
 
-    const showsContent = <h1> Not Implemented </h1>
+    const showsContent = ( 
+        <div className={styles.showContainer}>
+            {shows.map((show: IShow) => (
+                <SearchResultsShowCard key={show.imdb_id} show={show} />
+            ))}
+        </div>
+    )
 
     return (
         <>
