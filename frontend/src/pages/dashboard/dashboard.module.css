@@ -1,0 +1,22 @@
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 20px;
+}
+
+.dashboard .box {
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid var(--soft-bg);
+}
+
+.dashboard .box1 {
+    grid-column: span 1;
+    grid-row: span 3;
+}
+
+.dashboard .box4 {
+    grid-column: span 1;
+    grid-row: span 3;
+}
