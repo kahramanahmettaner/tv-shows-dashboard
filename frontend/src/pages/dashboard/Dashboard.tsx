@@ -1,9 +1,17 @@
+import TopBox from '../../components/topBox/TopBox'
 import styles from './dashboard.module.css'
 
 const Dashboard = () => {
   return (
     <div className={styles.dashboard}>
-      Dashboard
+      <div>
+        <TopBox />
+      </div>
+      <div>Box 2</div>
+      <div>Box 3</div>
+      <div>
+        <TopBox />
+      </div>
     </div>
   )
 }
