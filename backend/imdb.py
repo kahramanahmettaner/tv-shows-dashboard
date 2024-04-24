@@ -72,6 +72,58 @@ class ImdbShow:
         except Exception as e:
             raise Exception("Error parsing seasons count:", e)
 
+    def format_season_data(self, img, episode, rating, vote_count, description):
+        # TODO: handle possible errors when parsing the data
+
+        # # #
+        # extract image_link
+        # # #
+        check_for_jpg = lambda text: text.find('.jpg') != -1
+        src_set = img[0]['srcset']
+        src_set = src_set.split(' ')
+        image_links = list(filter(check_for_jpg, src_set))
+        image_link = image_links[-1]
+
+        # # #
+        # extract episode_name, episode_number, season_number
+        # # #
+        # get episode details from html element
+        episode_details = episode[0].text
+
+        # split text to separate episode number and also the episode name
+        episode_number, episode_name = episode_details.split(' ∙ ')
+        season_number, episode_number = episode_number.split('.')
+
+        # get only the number part and not the letters: S1 -> 1 and E2 -> 2
+        season_number = season_number[1:]
+        episode_number = episode_number[1:]
+
+        # # #
+        # extract imdb_rating
+        # # # "IMDb rating: 8.2" -> 8.2
+        imdb_rating_str = rating[0]['aria-label']
+        imdb_rating_str = imdb_rating_str.split(' ')[-1]
+        imdb_rating = float(imdb_rating_str)
+
+        # # #
+        # extract vote_count
+        # # # " (29K)"
+        # TODO: convert to float or int (would help to sort the episodes by vote count)
+        vote_count = vote_count[0].text
+        vote_count = vote_count.split("(")[-1][:-1]
+
+        current_episode_dict = {
+            "image_link": image_link,
+            "episode_name": episode_name,
+            "episode_number": episode_number,
+            "season_number": season_number,
+            "imdb_rating": imdb_rating,
+            "vote_count": vote_count,
+            "description": description[0].text
+        }
+
+        return current_episode_dict
+
     def fetch_show_data(self):
         try:
             req_url = self.season_url + '1'
@@ -123,13 +175,7 @@ class ImdbShow:
                 print(f"Error: {season_number}. season data not found! ")
 
             else:
-                current_episode_dict = {
-                    "image_link": img[0]['srcset'],
-                    "episode": episode[0].text,
-                    "imdb_rating": rating[0]['aria-label'],
-                    "vote_count": vote_count[0].text,
-                    "description": description[0].text
-                }
+                current_episode_dict = self.format_season_data(img, episode, rating, vote_count, description)
                 season_info.append(current_episode_dict)
 
         if len(season_info) == 0:
