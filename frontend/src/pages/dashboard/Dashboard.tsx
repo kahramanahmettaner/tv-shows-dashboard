@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import TopBox from '../../components/topBox/TopBox'
 import styles from './dashboard.module.css'
 import { useEffect } from 'react'
+import { getShowDetails } from '../../api'
 
 const Dashboard = () => {
 
@@ -17,8 +18,12 @@ const Dashboard = () => {
     );
   }
   
-  useEffect( () => {
-    console.log(imdb_id)
+  useEffect(() => {
+
+    getShowDetails(imdb_id)
+    .then( data => console.log(data) )
+    .catch( error => console.error(error) )
+
   }, [imdb_id])
 
   return (
