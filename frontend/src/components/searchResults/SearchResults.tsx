@@ -1,6 +1,6 @@
 import styles from './searchResults.module.css'
 import { useSearchShowStore } from '../../store/searchShowStore';
-import SearchResultsShowCard from '../searchResultsShowCard/searchResultsShowCard';
+import SearchResultsShowCard from '../searchResultsShowCard/SearchResultsShowCard';
 import { IShowSearchResult } from '../../types';
 
 const SearchResults = () => {
