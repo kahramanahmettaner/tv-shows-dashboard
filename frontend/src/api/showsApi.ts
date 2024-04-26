@@ -1,10 +1,10 @@
 import { baseUrl } from './index';
-import { IShow } from '../types';
+import { IShowSearchResult } from '../types';
 
-export const getShows = async (show_name: string): Promise<IShow[]> => {
+export const getShows = async (show_name: string): Promise<IShowSearchResult[]> => {
     const url = baseUrl + `/shows` + `?show_name=${encodeURIComponent(show_name)}`;
 
-    return new Promise<IShow[]>((resolve, reject) => {
+    return new Promise<IShowSearchResult[]>((resolve, reject) => {
 
         fetch(url)
         .then( response => {

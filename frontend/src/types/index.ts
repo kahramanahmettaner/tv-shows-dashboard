@@ -1,1 +1,2 @@
-export * from './show.interface';
+export * from './showSearchResult.interface';
+export * from './showDetails.interface';

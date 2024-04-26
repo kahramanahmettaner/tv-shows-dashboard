@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import { IShow } from '../types';
+import { IShowSearchResult } from '../types';
 import { getShows } from '../api/showsApi';
 
 interface SearchShowStore {
-    shows: IShow[];
+    shows: IShowSearchResult[];
     loading: boolean;
     errorMessage: string;
     fetchShows: (showName: string) => Promise<void>;

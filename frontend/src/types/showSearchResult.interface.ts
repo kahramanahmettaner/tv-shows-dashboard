@@ -1,4 +1,4 @@
-export interface IShow {
+export interface IShowSearchResult {
     imdb_id: string;
     name: string;
     actors: string;

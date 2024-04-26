@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './searchResultsShowCard.module.css';
-import { IShow } from '../../types';
+import { IShowSearchResult } from '../../types';
 import { Link } from 'react-router-dom'
 
 interface SearchResultsShowCardProps {
-    show: IShow;
+    show: IShowSearchResult;
 }
 
 const SearchResultsShowCard: React.FC<SearchResultsShowCardProps> = ({ show }) => {
