@@ -9,7 +9,7 @@ interface SearchResultsShowCardProps {
 
 const SearchResultsShowCard: React.FC<SearchResultsShowCardProps> = ({ show }) => {
     return (
-        <Link to={`/dashboard?imdb_id=${show.imdb_id}`}>
+        <Link to={`/dashboard/${show.imdb_id}`}>
             <div key={show.imdb_id} className={styles.showCard}>
                 <img src={show.img} alt={show.name} className={styles.showImage} />
                 <div className={styles.showDetails}>

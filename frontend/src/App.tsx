@@ -22,7 +22,7 @@ function App() {
 
         <Route path="" element={<Home />} />
 
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="dashboard/:imdb_id?" element={<Dashboard />} />
 
       </Route>
     </Routes>
