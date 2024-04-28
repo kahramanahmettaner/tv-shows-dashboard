@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import TopBox from '../../components/topBox/TopBox'
 import styles from './dashboard.module.css'
 import { useEffect } from 'react'
-import { getShowDetails } from '../../api'
+import { useShowDetailsStore } from '../../store/showDetailsStore'
 
 const Dashboard = () => {
 
@@ -18,12 +18,12 @@ const Dashboard = () => {
     );
   }
   
+  const { show_name, seasons_count, fetchShowDetails } = useShowDetailsStore( state => state )
+  
   useEffect(() => {
 
-    getShowDetails(imdb_id)
-    .then( data => console.log(data) )
-    .catch( error => console.error(error) )
-
+    fetchShowDetails(imdb_id)
+    
   }, [imdb_id])
 
   return (
@@ -32,8 +32,8 @@ const Dashboard = () => {
       <div className={`${styles.box} ${styles.box1}`}>
         <TopBox />
       </div>
-      <div className={`${styles.box} ${styles.box2}`}>Box 2</div>
-      <div className={`${styles.box} ${styles.box3}`}>Box 3</div>
+      <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}</div>
+      <div className={`${styles.box} ${styles.box3}`}>Seasons Count: {seasons_count}</div>
       <div className={`${styles.box} ${styles.box4}`}>
         <TopBox />
       </div>
