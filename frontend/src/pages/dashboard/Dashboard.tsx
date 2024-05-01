@@ -3,7 +3,6 @@ import TopBox from '../../components/topBox/TopBox'
 import styles from './dashboard.module.css'
 import { useEffect } from 'react'
 import { useShowDetailsStore } from '../../store/showDetailsStore'
-import { getEpisodes } from '../../api'
 
 const Dashboard = () => {
 
@@ -19,16 +18,17 @@ const Dashboard = () => {
     );
   }
   
-  const { show_name, seasons_count, fetchShowDetails } = useShowDetailsStore( state => state )
+  const { 
+    show_name, seasons_count, fetchShowDetails, 
+    episodes, fetchEpisodes 
+  } = useShowDetailsStore( state => state )
   
   useEffect(() => {
 
     fetchShowDetails(imdb_id)
 
     // to test the function: fetch the episodes of the first season of the tv show specified by imdb_id
-    getEpisodes(imdb_id, 1)
-    .then( data => console.log(data) )
-    .catch( err => console.error(err) )
+    fetchEpisodes(imdb_id, 1)
 
   }, [imdb_id])
 
@@ -41,7 +41,10 @@ const Dashboard = () => {
       <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}</div>
       <div className={`${styles.box} ${styles.box3}`}>Seasons Count: {seasons_count}</div>
       <div className={`${styles.box} ${styles.box4}`}>
-        <TopBox />
+          {/* Render episode names here */}
+            {episodes.map((episode, index) => (
+          <div key={index}>{episode.episode_name} {episode.imdb_rating}</div>
+        ))}
       </div>
       
     </div>
