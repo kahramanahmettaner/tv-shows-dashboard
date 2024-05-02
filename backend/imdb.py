@@ -12,7 +12,7 @@ class ImdbShow:
     def __init__(self, imdb_id):
         self.imdb_id = imdb_id
         self.season_url = f"https://www.imdb.com/title/{imdb_id}/episodes/?season="
-        self.cast_url = f'https://www.imdb.com/title/{imdb_id}/fullcredits'
+        self.credits_url = f'https://www.imdb.com/title/{imdb_id}/fullcredits'
 
         self.show_name = None
         self.seasons_count = None
@@ -190,8 +190,8 @@ class ImdbShow:
         print(f"Success: {season_number}")
         return season_info
 
-    def fetch_cast(self):
-        result = requests.get(self.cast_url, headers=self.headers)
+    def fetch_credits(self):
+        result = requests.get(self.credits_url, headers=self.headers)
         soup = BeautifulSoup(result.content, features="html.parser")
         content = soup.find('div', {'id': 'fullcredits_content'})
 
@@ -217,18 +217,18 @@ class ImdbShow:
                 td_name = td_elements[1]
                 td_character = td_elements[3]
 
-                actor = td_name.find('a').text.replace('\n', '')
+                actor_name = td_name.find('a').text.replace('\n', '')
 
                 a_elements_character = td_character.find_all('a')
 
-                character = a_elements_character[0].text if len(a_elements_character) >= 1 else None
+                character_name = a_elements_character[0].text if len(a_elements_character) >= 1 else None
 
                 character_info = a_elements_character[1].text if len(a_elements_character) >= 2 else None
                 episodes_count = character_info.split(',')[0] if character_info is not None else '0 episodes'
 
                 cast.append({
-                    'name': actor,
-                    'character': character,
+                    'name': actor_name,
+                    'character': character_name,
                     'episodes_count': episodes_count
                 })
 

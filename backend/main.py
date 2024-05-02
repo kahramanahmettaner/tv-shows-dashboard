@@ -66,16 +66,16 @@ def get_season_details():
         return jsonify({"message": str(e)}), 500
 
 
-@app.route('/show-cast', methods=['GET'])
-def get_show_cast():
+@app.route('/show-credits', methods=['GET'])
+def get_show_credits():
     imdb_id = request.args.get('imdb_id')
     if not imdb_id:
         return jsonify({"message": "imdb_id parameter is missing"}), 400
 
     try:
         show = ImdbShow(imdb_id)
-        cast = show.fetch_cast()
-        return jsonify(cast), 200
+        show_credits = show.fetch_credits()
+        return jsonify(show_credits), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
