@@ -214,8 +214,19 @@ class ImdbShow:
         for tr in tr_elements:
             td_elements = tr.find_all('td')
             if len(td_elements) == 4:
+                td_image_link = td_elements[0]
                 td_name = td_elements[1]
                 td_character = td_elements[3]
+
+                # TODO: image resolution is low, find a way to get a better image
+                img_tag = td_image_link.find('a').find('img')
+
+                # Check if img tag and loadlate attribute exist
+                if img_tag and 'loadlate' in img_tag.attrs:
+                    # Get the URL from the loadlate attribute
+                    image_link = img_tag['loadlate']
+                else:
+                    image_link = img_tag['src']
 
                 actor_name = td_name.find('a').text.replace('\n', '')
 
@@ -227,6 +238,7 @@ class ImdbShow:
                 episodes_count = character_info.split(',')[0] if character_info is not None else '0 episodes'
 
                 cast.append({
+                    'image_link': image_link,
                     'name': actor_name,
                     'character': character_name,
                     'episodes_count': episodes_count
