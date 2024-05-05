@@ -3,6 +3,7 @@ import TopBox from '../../components/topBox/TopBox'
 import styles from './dashboard.module.css'
 import { useEffect } from 'react'
 import { useShowDetailsStore } from '../../store/showDetailsStore'
+import { getCredits } from '../../api'
 
 const Dashboard = () => {
 
@@ -29,6 +30,10 @@ const Dashboard = () => {
 
     // to test the function: fetch the episodes of the first season of the tv show specified by imdb_id
     fetchEpisodes(imdb_id, 1)
+
+    getCredits(imdb_id)
+    .then( data => console.log(data) )
+    .catch( err => console.error(err) )
 
   }, [imdb_id])
 
