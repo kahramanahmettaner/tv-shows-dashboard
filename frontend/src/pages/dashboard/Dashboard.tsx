@@ -1,9 +1,7 @@
 import { useParams } from 'react-router-dom'
-import TopBox from '../../components/topBox/TopBox'
 import styles from './dashboard.module.css'
 import { useEffect } from 'react'
 import { useShowDetailsStore } from '../../store/showDetailsStore'
-import { getCredits } from '../../api'
 
 const Dashboard = () => {
 
@@ -21,7 +19,8 @@ const Dashboard = () => {
   
   const { 
     show_name, seasons_count, fetchShowDetails, 
-    episodes, fetchEpisodes 
+    episodes, fetchEpisodes,
+    credits, fetchCredits
   } = useShowDetailsStore( state => state )
   
   useEffect(() => {
@@ -31,9 +30,7 @@ const Dashboard = () => {
     // to test the function: fetch the episodes of the first season of the tv show specified by imdb_id
     fetchEpisodes(imdb_id, 1)
 
-    getCredits(imdb_id)
-    .then( data => console.log(data) )
-    .catch( err => console.error(err) )
+    fetchCredits(imdb_id)
 
   }, [imdb_id])
 
@@ -41,14 +38,17 @@ const Dashboard = () => {
     <div className={styles.dashboard}>
 
       <div className={`${styles.box} ${styles.box1}`}>
-        <TopBox />
+          {/* Render episode names here */}
+            {episodes.map((episode, index) => (
+          <div key={index}>{episode.episode_name} {episode.imdb_rating}</div>
+        ))}
       </div>
       <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}</div>
       <div className={`${styles.box} ${styles.box3}`}>Seasons Count: {seasons_count}</div>
       <div className={`${styles.box} ${styles.box4}`}>
           {/* Render episode names here */}
-            {episodes.map((episode, index) => (
-          <div key={index}>{episode.episode_name} {episode.imdb_rating}</div>
+            {credits.cast.map((cast_member, index) => (
+          <div key={index}>{cast_member.name} {cast_member.character}</div>
         ))}
       </div>
       
