@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import styles from './dashboard.module.css'
 import { useEffect } from 'react'
 import { useShowDetailsStore } from '../../store/showDetailsStore'
+import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
 
 const Dashboard = () => {
 
@@ -18,8 +19,8 @@ const Dashboard = () => {
   }
   
   const { 
-    show_name, seasons_count, fetchShowDetails, 
-    episodes, fetchEpisodes,
+    show_name, seasons_count, fetchShowDetails,
+    fetchEpisodes,
     credits, fetchCredits
   } = useShowDetailsStore( state => state )
   
@@ -38,10 +39,7 @@ const Dashboard = () => {
     <div className={styles.dashboard}>
 
       <div className={`${styles.box} ${styles.box1}`}>
-          {/* Render episode names here */}
-            {episodes.map((episode, index) => (
-          <div key={index}>{episode.episode_name} {episode.imdb_rating}</div>
-        ))}
+        <TopEpisodes />
       </div>
       <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}</div>
       <div className={`${styles.box} ${styles.box3}`}>Seasons Count: {seasons_count}</div>
