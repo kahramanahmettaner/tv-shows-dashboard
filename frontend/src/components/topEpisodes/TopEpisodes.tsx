@@ -1,4 +1,5 @@
 import { useShowDetailsStore } from "../../store/showDetailsStore"
+import TopBox from "../topBox/TopBox";
 
 const TopEpisodes = () => {
     const episodes = useShowDetailsStore( state => state.episodes )
@@ -17,10 +18,11 @@ const TopEpisodes = () => {
 
     return (
         <>
-            {/* Render episode names here */}
-            {top10EpisodesWithTitle.map((episode, index) => (
-                <div key={index}>{episode.episode_title} {episode.imdb_rating}</div>
-            ))}
+            <TopBox
+                listTitle="Top Episodes"
+                items={top10EpisodesWithTitle}
+                attributeNames={{ image: 'image_link', title: 'episode_title', details: 'episode_name', value: 'imdb_rating' }}
+            />
         </>
     )
 }
