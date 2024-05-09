@@ -1,0 +1,38 @@
+.top-box h1 {
+    margin-bottom: 20px;
+}
+
+.top-box .list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.top-box .item {
+    display: flex;
+    gap: 20px;
+}
+
+.top-box .item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-box .item-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.top-box .item-texts .username {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.top-box .item-texts .details {
+    font-size: 12px;
+    font-weight: 500;
+}
