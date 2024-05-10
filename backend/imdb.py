@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import time
+import re
 
 
 class ImdbShow:
@@ -236,6 +237,8 @@ class ImdbShow:
 
                 character_info = a_elements_character[1].text if len(a_elements_character) >= 2 else None
                 episodes_count = character_info.split(',')[0] if character_info is not None else '0 episodes'
+                episodes_count = episodes_count.split(' ')[0]
+                episodes_count = int(episodes_count)
 
                 cast.append({
                     'image_link': image_link,
@@ -260,10 +263,20 @@ class ImdbShow:
 
             name = td_name.find('a').text.replace('\n', '')
             detail = td_detail.text.replace('\n', '')
-            writers.append({
-                'name': name,
-                'episodes_count': detail
-            })
+
+            # Regular expression pattern to find the number before "episodes"
+            pattern = r'(\d+)\s+episodes'
+
+            # Search for the pattern in the string
+            match = re.search(pattern, detail)
+
+            # If a match is found, extract the number
+            if match:
+                episodes_count = match.group(1)
+                writers.append({
+                    'name': name,
+                    'episodes_count': episodes_count
+                })
 
         return writers
 
@@ -281,9 +294,19 @@ class ImdbShow:
 
             name = td_name.find('a').text.replace('\n', '')
             detail = td_detail.text.replace('\n', '')
-            directors.append({
-                'name': name,
-                'episodes_count': detail
-            })
+
+            # Regular expression pattern to find the number before "episodes"
+            pattern = r'(\d+)\s+episodes'
+
+            # Search for the pattern in the string
+            match = re.search(pattern, detail)
+
+            # If a match is found, extract the number
+            if match:
+                episodes_count = match.group(1)
+                directors.append({
+                    'name': name,
+                    'episodes_count': episodes_count
+                })
 
         return directors
