@@ -6,7 +6,7 @@ export interface ICredits {
 
 export interface ICrew {
     name: string;
-    episode_count: number;
+    episodes_count: number;
 }
 
 export interface ICast extends ICrew {

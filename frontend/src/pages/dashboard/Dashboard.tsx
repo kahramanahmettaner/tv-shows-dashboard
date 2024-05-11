@@ -3,6 +3,7 @@ import styles from './dashboard.module.css'
 import { useEffect } from 'react'
 import { useShowDetailsStore } from '../../store/showDetailsStore'
 import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
+import TopCredits from '../../components/topCredits/TopCredits'
 
 const Dashboard = () => {
 
@@ -21,7 +22,7 @@ const Dashboard = () => {
   const { 
     show_name, seasons_count, fetchShowDetails,
     fetchEpisodes,
-    credits, fetchCredits
+    fetchCredits
   } = useShowDetailsStore( state => state )
   
   useEffect(() => {
@@ -44,10 +45,7 @@ const Dashboard = () => {
       <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}</div>
       <div className={`${styles.box} ${styles.box3}`}>Seasons Count: {seasons_count}</div>
       <div className={`${styles.box} ${styles.box4}`}>
-          {/* Render episode names here */}
-            {credits.cast.map((cast_member, index) => (
-          <div key={index}>{cast_member.name} {cast_member.character}</div>
-        ))}
+        <TopCredits />
       </div>
       
     </div>
