@@ -273,6 +273,7 @@ class ImdbShow:
             # If a match is found, extract the number
             if match:
                 episodes_count = match.group(1)
+                episodes_count = int(episodes_count)
                 writers.append({
                     'name': name,
                     'episodes_count': episodes_count
@@ -304,6 +305,7 @@ class ImdbShow:
             # If a match is found, extract the number
             if match:
                 episodes_count = match.group(1)
+                episodes_count = int(episodes_count)
                 directors.append({
                     'name': name,
                     'episodes_count': episodes_count
