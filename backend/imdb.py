@@ -14,6 +14,7 @@ class ImdbShow:
         self.imdb_id = imdb_id
         self.season_url = f"https://www.imdb.com/title/{imdb_id}/episodes/?season="
         self.credits_url = f'https://www.imdb.com/title/{imdb_id}/fullcredits'
+        self.parental_guide_url = f'https://www.imdb.com/title/{imdb_id}/parentalguide'
 
         self.show_name = None
         self.seasons_count = None
@@ -206,6 +207,45 @@ class ImdbShow:
             'writers': writers,
             'directors': directors
         }
+
+    def fetch_parental_guide(self):
+        result = requests.get(self.parental_guide_url, headers=self.headers)
+        soup = BeautifulSoup(result.content, features="html.parser")
+        content = soup.find('div', {'id': 'main'})
+        sections = content.find('section', class_="content-advisories-index")
+
+        sections = self.extract_parental_guide_sections(sections)
+
+        return sections
+
+    @staticmethod
+    def extract_parental_guide_sections(sections):
+
+        related_section_ids = ['advisory-nudity',
+                               'advisory-violence',
+                               'advisory-profanity',
+                               'advisory-alcohol',
+                               'advisory-frightening'
+                               ]
+
+        parental_guide_sections = []
+        for section_id in related_section_ids:
+            section = sections.find('section', {'id': section_id})
+
+            title = section.find('h4').text
+
+            severity_li = section.find_all('li', class_="advisory-severity-vote")[0]
+            severity_div = severity_li.find_all('div', class_='ipl-swapper__content-primary')[0]
+            severity = severity_div.find_all('span')[0].text
+
+            section = {
+                'title': title,
+                'severity': severity
+            }
+
+            parental_guide_sections.append(section)
+
+        return parental_guide_sections
 
     @staticmethod
     def extract_cast(page_content):

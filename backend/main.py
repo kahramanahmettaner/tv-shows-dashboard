@@ -80,4 +80,18 @@ def get_show_credits():
         return jsonify({"message": str(e)}), 500
 
 
+@app.route('/parental-guide', methods=['GET'])
+def get_parental_guide():
+    imdb_id = request.args.get('imdb_id')
+    if not imdb_id:
+        return jsonify({"message": "imdb_id parameter is missing"}), 400
+
+    try:
+        show = ImdbShow(imdb_id)
+        parental_guide = show.fetch_parental_guide()
+        return jsonify(parental_guide), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+
 app.run()
