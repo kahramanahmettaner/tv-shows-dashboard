@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { getShowDetails } from '../api/showDetailsApi';
-import { ICredits, IEpisode } from '../types';
+import { ICredits, IEpisode, IParentalGuideCategory } from '../types';
 import { getCredits, getEpisodes } from '../api';
 
 
@@ -10,15 +10,19 @@ interface ShowDetailsStore {
     seasons_count: number;
     episodes: IEpisode[], 
     credits: ICredits,
+    parental_guide: IParentalGuideCategory[],
     loadingShowDetails: boolean;
     loadingEpisodes: boolean,
     loadingCredits: boolean;
+    loadingParentalGuide: boolean;
     errorMessageShowDetails: string;
     errorMessageEpisodes: string,
     errorMessageCredits: string;
+    errorMessageParentalGuide: string;
     fetchShowDetails: (imdb_id_input: string) => Promise<void>;
     fetchEpisodes: (imdb_id_input: string, season_number_input: number) => Promise<void>;
     fetchCredits: (imdb_id_input: string) => Promise<void>;
+    fetchParentalGuide: (imdb_id_input: string) => Promise<void>;
 }
 
 export const useShowDetailsStore = create<ShowDetailsStore>((set) => ({
@@ -27,12 +31,15 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set) => ({
     seasons_count: 0,
     episodes: [],
     credits: { cast: [], writers: [], directors: [] },
+    parental_guide: [],
     loadingShowDetails: false,
     loadingEpisodes: false,
     loadingCredits: false,
+    loadingParentalGuide: false,
     errorMessageShowDetails: '',
     errorMessageEpisodes: '',
     errorMessageCredits: '',
+    errorMessageParentalGuide: '',
     fetchShowDetails: async (imdb_id_input: string) => {
         try {
             // reset all values
@@ -96,6 +103,34 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set) => ({
             console.error('Error fetching credits:', errorMessage);
             set({
                 credits: { cast: [], writers: [], directors: [] },
+                loadingCredits: false,
+                errorMessageCredits: typeof errorMessage === 'string' ? errorMessage : 'Unknown error' 
+            })
+        }
+    },
+    fetchParentalGuide: async (imdb_id_input: string) => {
+
+        try {
+            // reset all values
+            set({
+                parental_guide: [],
+                loadingParentalGuide: true, errorMessageParentalGuide: ''
+            })
+
+            // fetch data
+            // TODO:
+            const fetched_data: IParentalGuideCategory[] = []
+            
+            // set values
+            set({
+                parental_guide: fetched_data,
+                loadingCredits: false, errorMessageCredits: ''
+            })
+        
+        } catch (errorMessage) {
+            console.error('Error fetching parental guide:', errorMessage);
+            set({
+                parental_guide: [],
                 loadingCredits: false,
                 errorMessageCredits: typeof errorMessage === 'string' ? errorMessage : 'Unknown error' 
             })
