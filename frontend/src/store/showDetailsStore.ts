@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { getShowDetails } from '../api/showDetailsApi';
 import { ICredits, IEpisode, IParentalGuideCategory } from '../types';
 import { getCredits, getEpisodes } from '../api';
+import { getParentalGuide } from '../api/parentalGuideApi';
 
 
 interface ShowDetailsStore {
@@ -118,12 +119,11 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set) => ({
             })
 
             // fetch data
-            // TODO:
-            const fetched_data: IParentalGuideCategory[] = []
+            const parental_guide: IParentalGuideCategory[] = await getParentalGuide(imdb_id_input)
             
             // set values
             set({
-                parental_guide: fetched_data,
+                parental_guide: parental_guide,
                 loadingCredits: false, errorMessageCredits: ''
             })
         

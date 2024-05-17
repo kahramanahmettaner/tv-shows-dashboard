@@ -20,12 +20,14 @@ const Dashboard = () => {
   }
   
   const { 
+    fetchParentalGuide, parental_guide,
     show_name, seasons_count, fetchShowDetails,
     fetchEpisodes,
     fetchCredits
   } = useShowDetailsStore( state => state )
   
   useEffect(() => {
+    fetchParentalGuide(imdb_id)
 
     fetchShowDetails(imdb_id)
 
@@ -35,6 +37,10 @@ const Dashboard = () => {
     fetchCredits(imdb_id)
 
   }, [imdb_id])
+
+  useEffect(() => {
+    console.log(parental_guide)
+  }, [parental_guide])
 
   return (
     <div className={styles.dashboard}>
