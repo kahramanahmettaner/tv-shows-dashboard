@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useShowDetailsStore } from '../../store/showDetailsStore'
 import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
 import TopCredits from '../../components/topCredits/TopCredits'
+import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
 
 const Dashboard = () => {
 
@@ -54,6 +55,11 @@ const Dashboard = () => {
         <TopCredits />
       </div>
       
+      
+      <div className={`${styles.box} ${styles.box2}`}>
+        <ParentalGuide />
+      </div>
+
     </div>
   )
 }
