@@ -5,6 +5,7 @@ import { useShowDetailsStore } from '../../store/showDetailsStore'
 import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
 import TopCredits from '../../components/topCredits/TopCredits'
 import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
+import BarChartBox from '../../components/barChartBox/BarChartBox'
 
 const Dashboard = () => {
 
@@ -13,7 +14,7 @@ const Dashboard = () => {
   // Check if imdb_id exists
   if (!imdb_id) {
     return (
-      <div>
+      <div> 
         <h1> Dashboard </h1>
         <p> No IMDb ID provided! </p>
       </div>
@@ -21,9 +22,9 @@ const Dashboard = () => {
   }
   
   const { 
-    fetchParentalGuide, parental_guide,
+    fetchParentalGuide,
     show_name, seasons_count, fetchShowDetails,
-    fetchEpisodes,
+    episodes, fetchEpisodes,
     fetchCredits
   } = useShowDetailsStore( state => state )
   
@@ -39,9 +40,19 @@ const Dashboard = () => {
 
   }, [imdb_id])
 
-  useEffect(() => {
-    console.log(parental_guide)
-  }, [parental_guide])
+  const episodesForChart = episodes.map( episode => {
+    return { 
+      name: `Season ${episode.season_number} Episode ${episode.episode_number}`, 
+      imdb_rating: episode.imdb_rating  
+    }
+  })
+
+  const barChartBoxData = {
+    title: "Season 1 Episodes",
+    color: "#FF8042",
+    dataKey: "imdb_rating",
+    chartData: episodesForChart
+  };
 
   return (
     <div className={styles.dashboard}>
@@ -58,6 +69,10 @@ const Dashboard = () => {
       
       <div className={`${styles.box} ${styles.box2}`}>
         <ParentalGuide />
+      </div>
+      
+      <div className={`${styles.box} ${styles.box2}`}>
+        <BarChartBox {...barChartBoxData} /> 
       </div>
 
     </div>
