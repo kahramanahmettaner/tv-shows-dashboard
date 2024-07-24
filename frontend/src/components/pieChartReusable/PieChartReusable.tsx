@@ -1,4 +1,4 @@
-import styles from './pieChart.module.css'
+import styles from './pieChartReusable.module.css'
 import React from 'react';
 import { ResponsiveContainer, PieChart, Pie, Tooltip } from 'recharts';
 
@@ -37,7 +37,7 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, labelTitle, de
     return null;
   };
 
-const PieChartBox: React.FC<Props> = ({ chartData, title, labelTitle, descriptionTitle }) => {
+const PieChartReusable: React.FC<Props> = ({ chartData, title, labelTitle, descriptionTitle }) => {
 
     return (
       <div className={styles['pie-chart-box']}>
@@ -64,4 +64,4 @@ const PieChartBox: React.FC<Props> = ({ chartData, title, labelTitle, descriptio
 
 }
 
-export default PieChartBox
+export default PieChartReusable

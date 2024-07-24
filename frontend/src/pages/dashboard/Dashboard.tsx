@@ -5,8 +5,8 @@ import { useShowDetailsStore } from '../../store/showDetailsStore'
 import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
 import TopCredits from '../../components/topCredits/TopCredits'
 import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
-import BarChartBox from '../../components/barChartBox/BarChartBox'
-import PieChartBox from '../../components/pieChartBox/PieChartBox'
+import BarChartReusable from '../../components/barChartReusable/BarChartReusable'
+import PieChartReusable from '../../components/pieChartReusable/PieChartReusable'
 
 const Dashboard = () => {
 
@@ -87,11 +87,11 @@ const Dashboard = () => {
 
       
       <div className={`${styles.box} ${styles.box2}`}>
-        <PieChartBox {...pieChartBoxData} /> 
+        <PieChartReusable {...pieChartBoxData} /> 
       </div>
 
       <div className={`${styles.box} ${styles.box2}`}>
-        <BarChartBox {...barChartBoxData} /> 
+        <BarChartReusable {...barChartBoxData} /> 
       </div>
 
             

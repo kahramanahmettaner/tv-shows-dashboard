@@ -1,4 +1,4 @@
-import styles from './barChart.module.css'
+import styles from './barChartReusable.module.css'
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from 'recharts'
 
 type Props = {
@@ -31,9 +31,9 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label, chartDa
     return null;
 };
 
-const BarChartBox = (props: Props) => {
+const BarChartReusable = (props: Props) => {
   return (
-    <div className={styles['bar-chart-box']}>
+    <div className={styles['bar-chart-container']}>
         <h1>{props.title}</h1>
 
         <div className={styles.chart}>
@@ -53,4 +53,4 @@ const BarChartBox = (props: Props) => {
 }
 
 
-export default BarChartBox
+export default BarChartReusable
