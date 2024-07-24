@@ -1,4 +1,4 @@
-import styles from './barChartBox.module.css'
+import styles from './barChart.module.css'
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from 'recharts'
 
 type Props = {

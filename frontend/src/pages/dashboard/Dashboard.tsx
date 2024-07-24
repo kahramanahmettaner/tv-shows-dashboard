@@ -6,6 +6,7 @@ import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
 import TopCredits from '../../components/topCredits/TopCredits'
 import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
 import BarChartBox from '../../components/barChartBox/BarChartBox'
+import PieChartBox from '../../components/pieChartBox/PieChartBox'
 
 const Dashboard = () => {
 
@@ -25,7 +26,7 @@ const Dashboard = () => {
     fetchParentalGuide,
     show_name, seasons_count, fetchShowDetails,
     episodes, fetchEpisodes,
-    fetchCredits
+    credits, fetchCredits
   } = useShowDetailsStore( state => state )
   
   useEffect(() => {
@@ -40,18 +41,35 @@ const Dashboard = () => {
 
   }, [imdb_id])
 
-  const episodesForChart = episodes.map( episode => {
+  const episodesForBarChart = episodes.map( episode => {
     return { 
       name: `Season ${episode.season_number} Episode ${episode.episode_number}`, 
       imdb_rating: episode.imdb_rating  
     }
   })
 
+  const directorsSliced = credits.directors.slice(0, 5)
+  const directorsForPieChart = directorsSliced.map( director => {
+    return { 
+      name: director.name,
+      value: director.episodes_count
+    }
+  })
+
+
   const barChartBoxData = {
     title: "Season 1 Episodes",
     color: "#FF8042",
     dataKey: "imdb_rating",
-    chartData: episodesForChart
+    chartData: episodesForBarChart
+  };
+
+  const pieChartBoxData = {
+    title: "Directors",
+    chartData: directorsForPieChart,
+    color: "#FF8042",
+    labelTitle: 'Director',
+    descriptionTitle: 'Directed Episodes Number'
   };
 
   return (
@@ -66,13 +84,19 @@ const Dashboard = () => {
         <TopCredits />
       </div>
       
+
       
       <div className={`${styles.box} ${styles.box2}`}>
-        <ParentalGuide />
+        <PieChartBox {...pieChartBoxData} /> 
       </div>
-      
+
       <div className={`${styles.box} ${styles.box2}`}>
         <BarChartBox {...barChartBoxData} /> 
+      </div>
+
+            
+      <div className={`${styles.box} ${styles.box2}`}>
+        <ParentalGuide />
       </div>
 
     </div>
