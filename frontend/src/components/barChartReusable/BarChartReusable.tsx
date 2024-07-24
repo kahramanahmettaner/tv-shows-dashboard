@@ -1,5 +1,5 @@
 import styles from './barChartReusable.module.css'
-import { Bar, BarChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { Bar, BarChart, ResponsiveContainer, Tooltip, YAxis } from 'recharts'
 
 type Props = {
     title:string;
@@ -32,18 +32,30 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label, chartDa
 };
 
 const BarChartReusable = (props: Props) => {
+
+  // Calculate the domain based on the data
+  const minValue = Math.min(...props.chartData.map((item: any) => item[props.dataKey]));
+
+  const maxBarSize = 10; // Maximum height of the bars
+  const minBarSize = minValue - 0.5;  // Minimum height of the bars
+
   return (
     <div className={styles['bar-chart-container']}>
         <h1>{props.title}</h1>
 
         <div className={styles.chart}>
             <ResponsiveContainer width="99%" height={150}>
-                <BarChart width={150} height={40} data={props.chartData}>
-                    <Tooltip 
-                        content={<CustomTooltip chartData={props.chartData} descriptionTitle={props.dataKey.replace(/_/g, ' ')}/>}
-                        cursor={{fillOpacity:'0.1'}}
-                    />    
-                    <Bar dataKey={props.dataKey} fill={props.color} />
+                <BarChart width={150} height={40} data={props.chartData} >
+                  
+                  {/* Set width to 30 as a workaround to eliminate the gap between the YAxis labels and the chart bars. */}
+                  {/* Related issue on GitHub: https://github.com/recharts/recharts/issues/2027 */}
+                  <YAxis domain={[minBarSize, maxBarSize]} width={30}/>
+
+                  <Tooltip 
+                      content={<CustomTooltip chartData={props.chartData} descriptionTitle={props.dataKey.replace(/_/g, ' ')}/>}
+                      cursor={{fillOpacity:'0.1'}}
+                  />    
+                  <Bar dataKey={props.dataKey} fill={props.color} />
                 </BarChart>
             </ResponsiveContainer>
         </div>
