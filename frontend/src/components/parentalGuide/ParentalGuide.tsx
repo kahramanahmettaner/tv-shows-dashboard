@@ -43,6 +43,7 @@ const ParentalGuide = () => {
             { parental_guide_modified.map( ( category ) => {
             return (
                 <HorizontalBarChart 
+                    key={category.title}
                     item={category}
                     attributeNames={{ title: 'title', levelText: 'severity', levelValue: 'severityValue', color: 'color' }}
                 />
