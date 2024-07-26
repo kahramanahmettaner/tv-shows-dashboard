@@ -8,7 +8,7 @@ function App() {
 
   const Layout = () => {
     return (
-      <div className='main'>
+      <div className='page-content'>
         <Navbar />
         <Outlet />
         <Footer />

@@ -9,9 +9,22 @@ a {
   color: inherit;
 }
 
-.main {
+body {
+  width: 100%;
+  height: 100vh;
   font-family: "Inter", sans-serif;
   background-color: var(--main-bg);
   color: var(--main-color);
 }
 
+body #root, .page-content, main {
+  width: 100%;
+  height: 100%;
+}
+
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

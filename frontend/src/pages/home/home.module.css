@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&family=Playwrite+BE+VLG:wght@100..400&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+.home {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 4em;
+}
+
+.home .text {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+.home .text h1 {
+    font-size: 2.5em;
+    color: #FF8042;
+    font-weight: 500;
+    font-family: "Concert One", sans-serif;
+}
