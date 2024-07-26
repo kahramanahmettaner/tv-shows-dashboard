@@ -33,11 +33,10 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label, chartDa
 
 const BarChartReusable = (props: Props) => {
 
-  // Calculate the domain based on the data
   const minValue = Math.min(...props.chartData.map((item: any) => item[props.dataKey]));
 
-  const maxBarSize = 10; // Maximum height of the bars
-  const minBarSize = minValue - 0.5;  // Minimum height of the bars
+  const maxBarSize = 10;
+  const minBarSize = minValue - 0.5;
 
   return (
     <div className={styles['bar-chart-container']}>

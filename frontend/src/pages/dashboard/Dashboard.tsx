@@ -7,6 +7,7 @@ import TopCredits from '../../components/topCredits/TopCredits'
 import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
 import BarChartReusable from '../../components/barChartReusable/BarChartReusable'
 import PieChartReusable from '../../components/pieChartReusable/PieChartReusable'
+import SimpleAreaChartReusable from '../../components/simpleAreaChartReusable/SimpleAreaChartReusable'
 
 const Dashboard = () => {
 
@@ -72,6 +73,13 @@ const Dashboard = () => {
     descriptionTitle: 'Directed Episodes Number'
   };
 
+  const areaChartBoxData = {
+    title: "Season 1 Episodes",
+    color: "#FF8042",
+    dataKey: "imdb_rating",
+    chartData: episodesForBarChart
+  };
+
   return (
     <div className={styles.dashboard}>
 
@@ -97,6 +105,10 @@ const Dashboard = () => {
             
       <div className={`${styles.box} ${styles.box2}`}>
         <ParentalGuide />
+      </div>
+
+      <div className={`${styles.box} ${styles.box2}`}>
+        <SimpleAreaChartReusable {...areaChartBoxData} /> 
       </div>
 
     </div>
