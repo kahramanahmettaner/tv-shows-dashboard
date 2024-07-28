@@ -1,4 +1,5 @@
 import { useShowDetailsStore } from "../../store/showDetailsStore"
+import { IEpisode } from "../../types";
 import TopBox from "../topBox/TopBox";
 
 const TopEpisodes = () => {
@@ -6,12 +7,15 @@ const TopEpisodes = () => {
     const loadingEpisodes = useShowDetailsStore( state => state.loadingEpisodes )
     const errorMessageEpisodes = useShowDetailsStore( state => state.errorMessageEpisodes )
 
-    // Slice the array to get only the top 10 episodes
-    const top10Episodes = episodes.slice(0, 10);
+    // Clone episodes data
+    let top10Episodes: IEpisode[] = JSON.parse(JSON.stringify(episodes));
 
     // Sort episodes by imdb_rating in descending order
     top10Episodes.sort((a, b) => b.imdb_rating - a.imdb_rating);
     
+    // Slice the array to get only the top 10 episodes
+    top10Episodes = top10Episodes.slice(0, 10);
+
     // Add episode_title to each episode object using the season_number and episode_number
     const top10EpisodesWithTitle = top10Episodes.map(episode => {
         const episode_title  = `Season ${episode.season_number} Episode ${episode.episode_number} `
