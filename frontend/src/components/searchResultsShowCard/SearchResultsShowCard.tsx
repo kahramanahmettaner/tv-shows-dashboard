@@ -9,8 +9,7 @@ interface SearchResultsShowCardProps {
 
 const SearchResultsShowCard: React.FC<SearchResultsShowCardProps> = ({ show }) => {
     return (
-        <Link to={`/dashboard/${show.imdb_id}`}>
-            <div key={show.imdb_id} className={styles.showCard}>
+        <Link to={`/dashboard/${show.imdb_id}`} className={styles.showCard} key={show.imdb_id}>
                 <img src={show.img} alt={show.name} className={styles.showImage} />
                 <div className={styles.showDetails}>
                     <h2 className={styles.showName}>{show.name}</h2>
@@ -18,7 +17,6 @@ const SearchResultsShowCard: React.FC<SearchResultsShowCardProps> = ({ show }) =
                     <p className={styles.showActors}>{show.actors}</p>
                     <p className={styles.showType}>{show.type}</p>
                 </div>
-            </div>
         </Link>
     );
 }

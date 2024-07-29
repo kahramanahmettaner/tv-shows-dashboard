@@ -11,15 +11,15 @@ const SearchResults = () => {
     const errorContent = <p>Error: {errorMessage}</p>
 
     const showsContent = ( 
-        <div className={styles.showContainer}>
+        <>
             {shows.map((show: IShowSearchResult) => (
                 <SearchResultsShowCard key={show.imdb_id} show={show} />
             ))}
-        </div>
+        </>
     )
 
     return (
-        <>
+        <div className={styles['search-results']}>
             {/* Display loading message while loading */}
             {loading && loadingContent}
 
@@ -31,7 +31,7 @@ const SearchResults = () => {
             {!loading && !errorMessage && (
                 shows.length == 0 || showsContent
             )}
-        </>
+        </div>
     )
 }
 
