@@ -46,6 +46,9 @@ class ImdbShow:
 
             actors = details[1].find('li').text
 
+            # modify image link for image to have an image with higher resolution
+            img = img.split('w, ')[-1].split(' ')[0].split('_V1_')[0] + '_V1_FMjpg'
+
             if media_type is not None and media_type.lower() == 'tv series':
                 shows.append({
                     'imdb_id': imdb_id,
