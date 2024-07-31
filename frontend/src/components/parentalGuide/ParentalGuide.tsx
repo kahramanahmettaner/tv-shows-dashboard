@@ -38,7 +38,7 @@ const ParentalGuide = () => {
             flexDirection: 'column',
             gap: '1.5em'
         }}>
-            <p>Parents Guide</p>
+            <h3>Parents Guide</h3>
 
             { parental_guide_modified.map( ( category ) => {
             return (

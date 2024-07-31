@@ -42,7 +42,7 @@ const PieChartReusable: React.FC<Props> = ({ chartData, title, labelTitle, descr
     return (
       <div className={styles['pie-chart-box']}>
 
-        <h1>{title}</h1>
+        <h3>{title}</h3>
 
         <div style={{ width: '100%', height: 300 }}>
           <ResponsiveContainer>

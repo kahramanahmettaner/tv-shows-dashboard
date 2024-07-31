@@ -40,7 +40,7 @@ const BarChartReusable = (props: Props) => {
 
   return (
     <div className={styles['bar-chart-container']}>
-        <h1>{props.title}</h1>
+        <h3>{props.title}</h3>
 
         <div className={styles.chart}>
             <ResponsiveContainer width="99%" height={150}>

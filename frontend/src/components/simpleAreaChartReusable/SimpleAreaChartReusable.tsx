@@ -40,7 +40,7 @@ const SimpleAreaChartReusable = ( props: Props ) => {
 
     return (
         <div className={styles['simple-area-chart']}>
-            <h1>{props.title}</h1>
+            <h3>{props.title}</h3>
 
             <div className={styles.chart} >
                 <ResponsiveContainer width="100%" height="100%">

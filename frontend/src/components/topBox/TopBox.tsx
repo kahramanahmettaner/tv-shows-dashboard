@@ -17,7 +17,7 @@ const TopBox: React.FC<Props> = ({ listTitle, items, attributeNames }) => {
 
     return (
         <div className={styles['top-box']}>
-            <h1>{listTitle}</h1>
+            <h3>{listTitle}</h3>
             <div className={styles.list} >
     
                 {items.map(item => (
