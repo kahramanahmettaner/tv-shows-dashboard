@@ -24,25 +24,40 @@ const Dashboard = () => {
   }
   
   const { 
-    fetchParentalGuide,
-    show_name, seasons_count, fetchShowDetails,
-    episodes, fetchEpisodes,
-    credits, fetchCredits
+    // fetchParentalGuide,
+    show_name, seasons_count,// fetchShowDetails,
+    episodes, //fetchEpisodes,
+    credits, //fetchCredits,
+    fetchShowData
   } = useShowDetailsStore( state => state )
   
+  // const fetchAllSeasons = async() => {
+  //   for (let season_number = 1; season_number <= seasons_count; season_number++) {
+  //     await fetchEpisodes(imdb_id, season_number)
+  //   }
+
+  // }
+
+  // useEffect(() => {
+  //   // fetchParentalGuide(imdb_id)
+  //   // fetchCredits(imdb_id)
+  //   // fetchShowDetails(imdb_id)
+
+  // }, [imdb_id])
+
   useEffect(() => {
-    fetchParentalGuide(imdb_id)
-
-    fetchShowDetails(imdb_id)
-
-    // to test the function: fetch the episodes of the first season of the tv show specified by imdb_id
-    fetchEpisodes(imdb_id, 1)
-
-    fetchCredits(imdb_id)
-
+    // fetchAllSeasons();
+    fetchShowData(imdb_id)
   }, [imdb_id])
 
-  const episodesForBarChart = episodes.map( episode => {
+  // get first season episodes only and in the format like episodesForAreaChart
+  // TODO: somehow season_number is not integer. but fix this and then use === here, instead ==
+  const episodesForBarChart = episodes.filter((episode) => episode.season_number == 1).map((episode) => ({
+    name: `Season ${episode.season_number} Episode ${episode.episode_number}`,
+    imdb_rating: episode.imdb_rating,
+  }));
+
+  const episodesForAreaChart = episodes.map( episode => {
     return { 
       name: `Season ${episode.season_number} Episode ${episode.episode_number}`, 
       imdb_rating: episode.imdb_rating  
@@ -74,10 +89,10 @@ const Dashboard = () => {
   };
 
   const areaChartBoxData = {
-    title: "Season 1 Episodes",
+    title: "All Episodes",
     color: "#FF8042",
     dataKey: "imdb_rating",
-    chartData: episodesForBarChart
+    chartData: episodesForAreaChart
   };
 
   return (

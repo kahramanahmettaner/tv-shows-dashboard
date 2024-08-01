@@ -4,7 +4,6 @@ import { ICredits, IEpisode, IParentalGuideCategory } from '../types';
 import { getCredits, getEpisodes } from '../api';
 import { getParentalGuide } from '../api/parentalGuideApi';
 
-
 interface ShowDetailsStore {
     imdb_id: string;
     show_name: string;
@@ -20,13 +19,14 @@ interface ShowDetailsStore {
     errorMessageEpisodes: string,
     errorMessageCredits: string;
     errorMessageParentalGuide: string;
+    fetchShowData: (imdb_id_input: string) => Promise<void>;
     fetchShowDetails: (imdb_id_input: string) => Promise<void>;
-    fetchEpisodes: (imdb_id_input: string, season_number_input: number) => Promise<void>;
+    fetchEpisodes: (imdb_id_input: string) => Promise<void>;
     fetchCredits: (imdb_id_input: string) => Promise<void>;
     fetchParentalGuide: (imdb_id_input: string) => Promise<void>;
 }
 
-export const useShowDetailsStore = create<ShowDetailsStore>((set) => ({
+export const useShowDetailsStore = create<ShowDetailsStore>((set, get) => ({
     imdb_id: '',
     show_name: '',
     seasons_count: 0,
@@ -41,6 +41,23 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set) => ({
     errorMessageEpisodes: '',
     errorMessageCredits: '',
     errorMessageParentalGuide: '',
+    fetchShowData: async(imdb_id_input: string) => {
+
+        try {
+            // Await fetchShowDetails as it provides necessary info for other functions
+            await get().fetchShowDetails(imdb_id_input);
+
+            // Fetch other data in parallel
+            await Promise.all([
+                get().fetchEpisodes(imdb_id_input),
+                get().fetchCredits(imdb_id_input),
+                get().fetchParentalGuide(imdb_id_input)
+            ]);
+        } catch (error) {
+            console.error('Error fetching show data:', error);
+            set({ errorMessageShowDetails: 'Error fetching show data' });
+        }
+    },
     fetchShowDetails: async (imdb_id_input: string) => {
         try {
             // reset all values
@@ -62,24 +79,41 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set) => ({
         
         }
     },
-    fetchEpisodes: async (imdb_id_input: string, season_number_input: number) => {
-    // TODO: this function is suitable to fetch one season data for instance, adjust the logic to fetch multiple seasons
-    
+    fetchEpisodes: async (imdb_id_input: string) => {
+        const seasons_count = get().seasons_count;
+
+        // Reset all values
+        set({ loadingEpisodes: true, errorMessageEpisodes: '', episodes: [] });
+
         try {
-            // reset all values
-            set({ loadingEpisodes: true, errorMessageEpisodes: '', episodes: [] })
+            // Array to hold all episodes
+            const allEpisodes = [];
 
-            // fetch data
-            const fetched_episodes = await getEpisodes(imdb_id_input, season_number_input);
-            
-            // set values
-            set({ episodes: fetched_episodes, loadingEpisodes: false, errorMessageEpisodes: '' })
+            // Fetch and set all seasons
+            for (let seasonNumber = 1; seasonNumber <= seasons_count; seasonNumber++) {
+                // Fetch current season
+                const fetched_episodes = await getEpisodes(imdb_id_input, seasonNumber);
 
-        } catch (errorMessage) {
-            console.error('Error fetching episodes:', errorMessage);
+                // Set teh first season immediately as it is required in some components seperately
+                if (seasonNumber === 1) {
+                    set({ episodes: fetched_episodes});
+                }
+
+
+                // Add fetched episodes to the allEpisodes array
+                allEpisodes.push(...fetched_episodes);
+            }
+
+            // Set state to indicate data is fetched successfully
+            set({ episodes: allEpisodes, loadingEpisodes: false, errorMessageEpisodes: '' });
+
+        } catch (error) {
+            console.error('Error fetching episodes:', error);
             set({
-                loadingEpisodes: false, errorMessageEpisodes: typeof errorMessage === 'string' ? errorMessage : 'Unknown error'
-            })
+                loadingEpisodes: false, 
+                errorMessageEpisodes: 'Error fetching episodes',
+                episodes: []
+            });
         }
     },
     fetchCredits: async (imdb_id_input: string) => {
