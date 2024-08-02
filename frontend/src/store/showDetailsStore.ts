@@ -24,6 +24,7 @@ interface ShowDetailsStore {
     fetchEpisodes: (imdb_id_input: string) => Promise<void>;
     fetchCredits: (imdb_id_input: string) => Promise<void>;
     fetchParentalGuide: (imdb_id_input: string) => Promise<void>;
+    resetState: () => void;
 }
 
 export const useShowDetailsStore = create<ShowDetailsStore>((set, get) => ({
@@ -42,6 +43,8 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set, get) => ({
     errorMessageCredits: '',
     errorMessageParentalGuide: '',
     fetchShowData: async(imdb_id_input: string) => {
+
+        get().resetState();
 
         try {
             // Await fetchShowDetails as it provides necessary info for other functions
@@ -170,4 +173,22 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set, get) => ({
             })
         }
     },
+    resetState: () => {
+        set({
+            imdb_id: '',
+            show_name: '',
+            seasons_count: 0,
+            episodes: [],
+            credits: { cast: [], writers: [], directors: [] },
+            parental_guide: [],
+            loadingShowDetails: false,
+            loadingEpisodes: false,
+            loadingCredits: false,
+            loadingParentalGuide: false,
+            errorMessageShowDetails: '',
+            errorMessageEpisodes: '',
+            errorMessageCredits: '',
+            errorMessageParentalGuide: '',
+        });
+    }
 }));
