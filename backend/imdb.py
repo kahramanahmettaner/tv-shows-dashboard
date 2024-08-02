@@ -32,32 +32,37 @@ class ImdbShow:
 
         shows = []
         for li in li_elements:
-            img = li.find('img')['srcset']
-            link = li.find('a')['href']
-            imdb_id = link.split('/')[2]
-            name = li.find('a').text
+            # TODO: some items can cause error. For now try except is used to skip these items
+            # TODO: handle this issue in a proper way
+            try:
+                img = li.find('img')['srcset']
+                link = li.find('a')['href']
+                imdb_id = link.split('/')[2]
+                name = li.find('a').text
 
-            details = li.find_all('ul')
-            year = details[0].find_all('li')[0].text
+                details = li.find_all('ul')
+                year = details[0].find_all('li')[0].text
 
-            media_type = None
-            if len(details[0].find_all('li')) >= 2:
-                media_type = details[0].find_all('li')[1].text
+                media_type = None
+                if len(details[0].find_all('li')) >= 2:
+                    media_type = details[0].find_all('li')[1].text
 
-            actors = details[1].find('li').text
+                actors = details[1].find('li').text
 
-            # modify image link for image to have an image with higher resolution
-            img = img.split('w, ')[-1].split(' ')[0].split('_V1_')[0] + '_V1_FMjpg'
+                # modify image link for image to have an image with higher resolution
+                img = img.split('w, ')[-1].split(' ')[0].split('_V1_')[0] + '_V1_FMjpg'
 
-            if media_type is not None and media_type.lower() == 'tv series':
-                shows.append({
-                    'imdb_id': imdb_id,
-                    'name': name,
-                    'img': img,
-                    'year': year,
-                    'type': media_type,
-                    'actors': actors
-                })
+                if media_type is not None and (media_type.lower() == 'tv series' or media_type.lower() == 'tv mini series'):
+                    shows.append({
+                        'imdb_id': imdb_id,
+                        'name': name,
+                        'img': img,
+                        'year': year,
+                        'type': media_type,
+                        'actors': actors
+                    })
+            except:
+                continue
 
         return shows
 
