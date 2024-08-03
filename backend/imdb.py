@@ -122,6 +122,11 @@ class ImdbShow:
         vote_count = vote_count[0].text
         vote_count = vote_count.split("(")[-1][:-1]
 
+        # return description if it exists else return ''
+        description_text = ''
+        if len(description) > 0:
+            description_text = getattr(description[0], 'text', '')
+
         current_episode_dict = {
             "image_link": image_link,
             "episode_name": episode_name,
@@ -129,7 +134,7 @@ class ImdbShow:
             "season_number": season_number,
             "imdb_rating": imdb_rating,
             "vote_count": vote_count,
-            "description": description[0].text
+            "description": description_text
         }
 
         return current_episode_dict
@@ -159,7 +164,7 @@ class ImdbShow:
         except Exception as e:
             raise Exception("An unexpected error occurred:", e)
 
-    def fetch_season_data(self, season_number, limit_of_attempts=10):
+    def fetch_season_data(self, season_number, limit_of_attempts=4):
 
         # sometimes, the request succeeds, but we don't get season data
         # that's why we need to try to fetch the season data multiple times, in case we don't get it
@@ -181,7 +186,13 @@ class ImdbShow:
             vote_count = current_episode.find_all("span", class_="ipc-rating-star--voteCount")
             description = current_episode.find_all("div", class_="ipc-html-content-inner-div")
 
-            if len(img) == 0 or len(episode) == 0 or len(rating) == 0 or len(vote_count) == 0 or len(description) == 0:
+            # in case it is a new season and the episodes are not released yet or have just no ratings
+            if len(episode) != 0 and len(rating) == 0:
+                print(f"Season {season_number}: episodes have no ratings! ")
+                return []
+
+            # in case the request was not successful even if there could be some episode data
+            if len(img) == 0 or len(episode) == 0 or len(rating) == 0 or len(vote_count) == 0:
                 print(f"Error: {season_number}. season data not found! ")
 
             else:
