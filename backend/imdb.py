@@ -297,14 +297,19 @@ class ImdbShow:
                 character_info = a_elements_character[1].text if len(a_elements_character) >= 2 else None
                 episodes_count = character_info.split(',')[0] if character_info is not None else '0 episodes'
                 episodes_count = episodes_count.split(' ')[0]
-                episodes_count = int(episodes_count)
 
-                cast.append({
-                    'image_link': image_link,
-                    'name': actor_name,
-                    'character': character_name,
-                    'episodes_count': episodes_count
-                })
+                # To fix the issue where episode count can not be converted to int e.g. 'unknown episodes' etc.
+                # TODO: Fix this in a proper manner
+                try:
+                    episodes_count = int(episodes_count)
+                    cast.append({
+                        'image_link': image_link,
+                        'name': actor_name,
+                        'character': character_name,
+                        'episodes_count': episodes_count
+                    })
+                except:
+                    pass
 
         return cast
 
