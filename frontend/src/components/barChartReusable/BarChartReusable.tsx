@@ -48,12 +48,19 @@ const BarChartReusable = (props: Props) => {
                   
                   {/* Set width to 30 as a workaround to eliminate the gap between the YAxis labels and the chart bars. */}
                   {/* Related issue on GitHub: https://github.com/recharts/recharts/issues/2027 */}
-                  <YAxis domain={[minBarSize, maxBarSize]} width={30}/>
+                  <YAxis 
+                    domain={[minBarSize, maxBarSize]} 
+                    width={30}
+                    tickFormatter={(value) => {
+                      if (value === 10) { return 10; }
+                      return value.toFixed(1)
+                    }}
+                  />
 
                   <Tooltip 
                       content={<CustomTooltip chartData={props.chartData} descriptionTitle={props.dataKey.replace(/_/g, ' ')}/>}
                       cursor={{fillOpacity:'0.1'}}
-                  />    
+                  />
                   <Bar dataKey={props.dataKey} fill={props.color} />
                 </BarChart>
             </ResponsiveContainer>
