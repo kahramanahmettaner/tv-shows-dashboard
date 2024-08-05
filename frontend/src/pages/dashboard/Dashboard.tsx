@@ -26,6 +26,7 @@ const Dashboard = () => {
   const { 
     // fetchParentalGuide,
     show_name, seasons_count,// fetchShowDetails,
+    imdb_rating, actors, description, years,
     episodes, //fetchEpisodes,
     credits, //fetchCredits,
     fetchShowData
@@ -101,8 +102,8 @@ const Dashboard = () => {
       <div className={`${styles.box} ${styles.box1}`}>
         <TopEpisodes />
       </div>
-      <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}</div>
-      <div className={`${styles.box} ${styles.box3}`}>Seasons Count: {seasons_count}</div>
+      <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}, Seasons Count: {seasons_count}</div>
+      <div className={`${styles.box} ${styles.box3}`}>IMDB Rating: {imdb_rating}, Actors: {actors}, Description: {description}, Years: {years}, </div>
       <div className={`${styles.box} ${styles.box4}`}>
         <TopCredits />
       </div>

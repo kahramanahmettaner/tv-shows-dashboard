@@ -1,8 +1,8 @@
 import { baseUrl } from './index';
 import { IShowDetails } from '../types';
 
-export const getShowDetails = async (imdb_id: string): Promise<Partial<IShowDetails>> => {
-    const url = baseUrl + `/show-details` + `?imdb_id=${encodeURIComponent(imdb_id)}`;
+export const getShowInfo = async (imdb_id: string): Promise<Partial<IShowDetails>> => {
+    const url = baseUrl + `/show-info` + `?imdb_id=${encodeURIComponent(imdb_id)}`;
 
     return new Promise<Partial<IShowDetails>>((resolve, reject) => {
 

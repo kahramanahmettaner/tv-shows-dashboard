@@ -18,6 +18,11 @@ class ImdbShow:
 
         self.show_name = None
         self.seasons_count = None
+        self.years = None
+        self.description = None
+        self.imdb_rating = None
+        self.actors = None
+        self.image = None
 
     @classmethod
     def search_for_shows(cls, show_name):
@@ -35,7 +40,7 @@ class ImdbShow:
             # TODO: some items can cause error. For now try except is used to skip these items
             # TODO: handle this issue in a proper way
             try:
-                img = li.find('img')['srcset']
+                image = li.find('img')['srcset']
                 link = li.find('a')['href']
                 imdb_id = link.split('/')[2]
                 name = li.find('a').text
@@ -50,13 +55,13 @@ class ImdbShow:
                 actors = details[1].find('li').text
 
                 # modify image link for image to have an image with higher resolution
-                img = img.split('w, ')[-1].split(' ')[0].split('_V1_')[0] + '_V1_FMjpg'
+                image = image.split('w, ')[-1].split(' ')[0].split('_V1_')[0] + '_V1_FMjpg'
 
                 if media_type is not None and (media_type.lower() == 'tv series' or media_type.lower() == 'tv mini series'):
                     shows.append({
                         'imdb_id': imdb_id,
                         'name': name,
-                        'img': img,
+                        'image': image,
                         'year': year,
                         'type': media_type,
                         'actors': actors
@@ -81,6 +86,75 @@ class ImdbShow:
             self.seasons_count = int(seasons_count)
         except Exception as e:
             raise Exception("Error parsing seasons count:", e)
+
+    def parse_show_years(self, soup):
+        try:
+            self.years = soup.find('a', {"href": f"/title/{self.imdb_id}/releaseinfo?ref_=tt_ov_rdat"}).text
+        except Exception as e:
+            raise Exception("Error parsing show years:", e)
+
+    def parse_imdb_rating(self, soup):
+        try:
+            rating_a_element = soup.find('a', {"href": f"/title/{self.imdb_id}/ratings/?ref_=tt_ov_rt"})
+            rating_div_element = rating_a_element.find('div', {
+                'data-testid': 'hero-rating-bar__aggregate-rating__score'
+            })
+            self.imdb_rating = float(rating_div_element.text.split('/')[0])
+        except Exception as e:
+            raise Exception("Error parsing show imdb_rating:", e)
+
+    def parse_show_description(self, soup):
+        try:
+            self.description = soup.find('p', {'data-testid': 'plot'}).text
+        except Exception as e:
+            raise Exception("Error parsing show description:", e)
+
+    def parse_show_actors(self, soup):
+        try:
+            actors_li_elements = soup.find('a', {
+                'href': f'/title/{self.imdb_id}/fullcredits/cast?ref_=tt_ov_st_sm'}).find_next_sibling(
+                'div').find_all('li')
+            actors = []
+            for e in actors_li_elements:
+                actors.append(e.text)
+
+            self.actors = ', '.join(actors)
+        except Exception as e:
+            raise Exception("Error parsing show cast:", e)
+
+    def parse_show_image(self, soup):
+        try:
+            img_div = soup.find('div', {'data-testid': 'hero-media__poster'})
+            img_a = img_div.find('a', class_='ipc-lockup-overlay')
+            href = img_a['href']
+
+            req_url = 'https://imdb.com' + href
+            result = requests.get(req_url, headers=self.headers)
+            result.raise_for_status()  # Raises an exception for 4xx or 5xx status codes
+            soup = BeautifulSoup(result.content, features="html.parser")
+
+            img_div = soup.find('div', {'data-testid': 'media-viewer'})
+
+            # get image id to find the right image
+            href_sections = href.split('/')
+            img_id_index = href_sections.index('mediaviewer') + 1
+            img_id = href_sections[img_id_index]
+            img_element = img_div.find('img', {'data-image-id': f'{img_id}-curr'})
+
+            src_set = img_element['srcset']
+
+            # # #
+            # extract image_link
+            # # #
+            check_for_jpg = lambda text: text.find('.jpg') != -1
+            src_set = src_set.split(' ')
+            image_links = list(filter(check_for_jpg, src_set))
+            image_link = image_links[-1]
+
+            self.image = image_link
+
+        except Exception as e:
+            raise Exception("Error parsing show image:", e)
 
     def format_season_data(self, img, episode, rating, vote_count, description):
         # TODO: handle possible errors when parsing the data
@@ -139,8 +213,9 @@ class ImdbShow:
 
         return current_episode_dict
 
-    def fetch_show_data(self):
+    def fetch_show_info(self):
         try:
+            # season 1 page (show_name, seasons_count)
             req_url = self.season_url + '1'
             result = requests.get(req_url, headers=self.headers)
             result.raise_for_status()  # Raises an exception for 4xx or 5xx status codes
@@ -148,6 +223,35 @@ class ImdbShow:
 
             self.parse_seasons_count(soup)
             self.parse_show_name(soup)
+
+        except requests.RequestException as e:
+            # Check if the exception is an HTTPError
+            if isinstance(e, requests.HTTPError):
+                # If it is, raise an exception with the error message including the error type and status code
+                raise Exception(f"Error fetching show data: HTTPError {e.response.status_code}")
+            else:
+                # If it's not an HTTPError, raise an exception with just the error type
+                raise Exception("Error fetching show data: " + type(e).__name__)
+
+            # to send also the error message from imdb
+            # raise Exception("Error fetching show data:", e)
+
+        except Exception as e:
+            raise Exception("An unexpected error occurred:", e)
+
+    def fetch_show_details(self):
+        try:
+            req_url = 'https://imdb.com/title/' + self.imdb_id
+            result = requests.get(req_url, headers=self.headers)
+            result.raise_for_status()  # Raises an exception for 4xx or 5xx status codes
+            soup = BeautifulSoup(result.content, features="html.parser")
+
+            # self.show_name = soup.find('h1', {"data-testid": "hero__pageTitle"}).text
+            self.parse_show_years(soup)
+            self.parse_imdb_rating(soup)
+            self.parse_show_description(soup)
+            self.parse_show_actors(soup)
+            self.parse_show_image(soup)
 
         except requests.RequestException as e:
             # Check if the exception is an HTTPError

@@ -4,5 +4,5 @@ export interface IShowSearchResult {
     actors: string;
     year: string;
     type: string;
-    img: string;
+    image: string;
 }
