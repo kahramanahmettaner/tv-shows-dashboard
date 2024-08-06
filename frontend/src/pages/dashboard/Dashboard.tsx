@@ -8,6 +8,7 @@ import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
 import BarChartReusable from '../../components/barChartReusable/BarChartReusable'
 import PieChartReusable from '../../components/pieChartReusable/PieChartReusable'
 import SimpleAreaChartReusable from '../../components/simpleAreaChartReusable/SimpleAreaChartReusable'
+import ShowCard from '../../components/showCard/ShowCard'
 
 const Dashboard = () => {
 
@@ -24,30 +25,13 @@ const Dashboard = () => {
   }
   
   const { 
-    // fetchParentalGuide,
-    show_name, seasons_count,// fetchShowDetails,
-    imdb_rating, actors, description, years,
-    episodes, //fetchEpisodes,
-    credits, //fetchCredits,
+    episodes,
+    credits,
     fetchShowData
   } = useShowDetailsStore( state => state )
-  
-  // const fetchAllSeasons = async() => {
-  //   for (let season_number = 1; season_number <= seasons_count; season_number++) {
-  //     await fetchEpisodes(imdb_id, season_number)
-  //   }
 
-  // }
-
-  // useEffect(() => {
-  //   // fetchParentalGuide(imdb_id)
-  //   // fetchCredits(imdb_id)
-  //   // fetchShowDetails(imdb_id)
-
-  // }, [imdb_id])
 
   useEffect(() => {
-    // fetchAllSeasons();
     fetchShowData(imdb_id)
   }, [imdb_id])
 
@@ -102,8 +86,14 @@ const Dashboard = () => {
       <div className={`${styles.box} ${styles.box1}`}>
         <TopEpisodes />
       </div>
-      <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}, Seasons Count: {seasons_count}</div>
-      <div className={`${styles.box} ${styles.box3}`}>IMDB Rating: {imdb_rating}, Actors: {actors}, Description: {description}, Years: {years}, </div>
+      <div 
+        className={`${styles.box}`} 
+        style={{ gridColumn: 'span 2', gridRow: 'span 1' }}>
+        <ShowCard />
+      </div>
+
+      {/* <div className={`${styles.box} ${styles.box2}`}>Showname: {show_name}, Seasons Count: {seasons_count}</div>
+      <div className={`${styles.box} ${styles.box3}`}>IMDB Rating: {imdb_rating}, Actors: {actors}, Description: {description}, Year: {year}, </div> */}
       <div className={`${styles.box} ${styles.box4}`}>
         <TopCredits />
       </div>
