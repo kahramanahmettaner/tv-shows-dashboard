@@ -63,3 +63,24 @@
     font-size: 1.1em;
     font-weight: 800;
 }
+
+.showCard ::-webkit-scrollbar {
+    width: .5em;
+}
+
+.showCard ::-webkit-scrollbar-track {
+    background-color: var(--dark-bg);
+    border-radius: .5em;
+}
+
+.showCard ::-webkit-scrollbar-thumb {
+    /* TODO: which bg-color is better? */
+    background-color: #FF8042; 
+    background-color: #616161;
+    border-radius: .5em;
+}
+
+.showCard ::-webkit-scrollbar-thumb:hover {
+    background-color: #898989;
+    cursor: pointer;
+}
