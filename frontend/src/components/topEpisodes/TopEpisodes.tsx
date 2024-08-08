@@ -42,6 +42,9 @@ const TopEpisodes = () => {
                 listTitle="Top Episodes"
                 items={top10EpisodesWithTitle}
                 attributeNames={{ image: 'image_link', title: 'episode_title', details: 'episode_name', value: 'imdb_rating' }}
+                titleColor="#FFF"
+                valueColor="#FF8042"
+                detailsColor="#978"
             />
             )}
         </>

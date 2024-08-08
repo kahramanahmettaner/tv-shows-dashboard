@@ -11,9 +11,12 @@ type Props = {
     listTitle: string;
     items: any[];
     attributeNames: TAttributNames;
+    titleColor?: string;
+    detailsColor?: string;
+    valueColor?: string;
 }
 
-const TopBox: React.FC<Props> = ({ listTitle, items, attributeNames }) => {
+const TopBox: React.FC<Props> = ({ listTitle, items, attributeNames, titleColor, detailsColor, valueColor }) => {
 
     return (
         <div className={styles['top-box']}>
@@ -25,15 +28,15 @@ const TopBox: React.FC<Props> = ({ listTitle, items, attributeNames }) => {
                         <div className={styles.item}>
                             <img src={item[attributeNames.image]} alt='' />
                             <div className={styles['item-texts']}>
-                                <span className={styles.title}>
+                                <span className={styles.title} style={{ color: titleColor }}>
                                     {item[attributeNames.title]}
                                 </span>
-                                <span className={styles.details}>
+                                <span className={styles.details} style={{ color: detailsColor }}>
                                     {item[attributeNames.details]}
                                 </span>
                             </div>
                         </div>
-                        <span className={styles.value}>
+                        <span className={styles.value} style={{ color: valueColor }}>
                             {item[attributeNames.value]}
                         </span>
                     </div>

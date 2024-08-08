@@ -38,6 +38,9 @@ const TopCredits = () => {
                 listTitle="Actors with Most Episodes"
                 items={top10CastMembersDisplay}
                 attributeNames={{ image: 'image_link', title: 'character', details: 'name', value: 'episodes_count_text' }}
+                titleColor="#FFF"
+                valueColor="#BBA"
+                detailsColor="#978"
             />
             )}
         </>
