@@ -13,12 +13,16 @@ type Props = {
 const Dropdown = ({ dropdownItems, selectedIndex, setSelectedIndex }: Props) => {
 
     const [isActive, setIsActive] = useState(false);
-    const toggleIsActive = () => { setIsActive( prev => !prev ) }
+    const toggleIsActive = () => { setIsActive( prev => !prev ); }
 
     const dropdownRef = useRef<HTMLDivElement>(null);
     useClickedOutside(dropdownRef, () => setIsActive(false));
 
     const selectedItem = dropdownItems[selectedIndex];
+    const handleItemSelected = (index: number) => {
+        setIsActive(false);
+        setSelectedIndex(index);
+    }
 
     return (
         <div 
@@ -50,7 +54,7 @@ const Dropdown = ({ dropdownItems, selectedIndex, setSelectedIndex }: Props) => 
                                 : styles['item']
                             }
                             key={index}
-                            onClick={() => setSelectedIndex(index)}
+                            onClick={() => handleItemSelected(index)}
                         >{item}</li>
                     )) 
                     }
