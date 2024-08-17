@@ -23,8 +23,8 @@ const TopBox: React.FC<Props> = ({ listTitle, items, attributeNames, titleColor,
             <h3>{listTitle}</h3>
             <div className={styles.list} >
     
-                {items.map(item => (
-                    <div key={item[attributeNames.title]} className={styles['list-item']} >
+                {items.map((item, index) => (
+                    <div key={index} className={styles['list-item']} >
                         <div className={styles.item}>
                             <img src={item[attributeNames.image]} alt='' />
                             <div className={styles['item-texts']}>
