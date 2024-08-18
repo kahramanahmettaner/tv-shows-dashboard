@@ -5,10 +5,10 @@ import { useShowDetailsStore } from '../../store/showDetailsStore'
 import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
 import TopCredits from '../../components/topCredits/TopCredits'
 import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
-import BarChartReusable from '../../components/barChartReusable/BarChartReusable'
-import PieChartReusable from '../../components/pieChartReusable/PieChartReusable'
-import SimpleAreaChartReusable from '../../components/simpleAreaChartReusable/SimpleAreaChartReusable'
+import PieChartReusable from '../../componentsReusable/pieChartReusable/PieChartReusable'
+import SimpleAreaChartReusable from '../../componentsReusable/simpleAreaChartReusable/SimpleAreaChartReusable'
 import ShowCard from '../../components/showCard/ShowCard'
+import BarChartBox from '../../components/barChartBox/BarChartBox'
 
 const Dashboard = () => {
 
@@ -37,11 +37,6 @@ const Dashboard = () => {
 
   // get first season episodes only and in the format like episodesForAreaChart
   // TODO: somehow season_number is not integer. but fix this and then use === here, instead ==
-  const episodesForBarChart = episodes.filter((episode) => episode.season_number == 1).map((episode) => ({
-    name: `Season ${episode.season_number} Episode ${episode.episode_number}`,
-    imdb_rating: episode.imdb_rating,
-  }));
-
   const episodesForAreaChart = episodes.map( episode => {
     return { 
       name: `Season ${episode.season_number} Episode ${episode.episode_number}`, 
@@ -56,14 +51,6 @@ const Dashboard = () => {
       value: director.episodes_count
     }
   })
-
-
-  const barChartBoxData = {
-    title: "Season 1 Episodes",
-    color: "#FF8042",
-    dataKey: "imdb_rating",
-    chartData: episodesForBarChart
-  };
 
   const pieChartBoxData = {
     title: "Directors",
@@ -105,7 +92,7 @@ const Dashboard = () => {
       </div>
 
       <div className={`${styles.box} ${styles.box2}`}>
-        <BarChartReusable {...barChartBoxData} /> 
+        <BarChartBox />
       </div>
 
             

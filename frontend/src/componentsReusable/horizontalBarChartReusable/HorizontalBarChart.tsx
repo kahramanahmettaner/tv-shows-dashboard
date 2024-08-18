@@ -11,7 +11,7 @@ type Props = {
     attributeNames: TAttributNames;
 }
 
-const HorizontalBarChart: React.FC<Props> = ({ item, attributeNames }) => { 
+const HorizontalBarChartReusable: React.FC<Props> = ({ item, attributeNames }) => { 
     
     return (
         <div className={styles['container']}>
@@ -35,4 +35,4 @@ const HorizontalBarChart: React.FC<Props> = ({ item, attributeNames }) => {
     )
 }
 
-export default HorizontalBarChart
+export default HorizontalBarChartReusable

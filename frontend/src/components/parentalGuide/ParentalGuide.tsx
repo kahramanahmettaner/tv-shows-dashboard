@@ -1,5 +1,5 @@
 import { useShowDetailsStore } from '../../store/showDetailsStore'
-import HorizontalBarChart from '../horizontalBarChart/HorizontalBarChart'
+import HorizontalBarChartReusable from '../../componentsReusable/horizontalBarChartReusable/HorizontalBarChart'
 import styles from './parentalGuide.module.css'
 
 const ParentalGuide = () => {
@@ -42,7 +42,7 @@ const ParentalGuide = () => {
 
             { parental_guide_modified.map( ( category ) => {
             return (
-                <HorizontalBarChart 
+                <HorizontalBarChartReusable 
                     key={category.title}
                     item={category}
                     attributeNames={{ title: 'title', levelText: 'severity', levelValue: 'severityValue', color: 'color' }}

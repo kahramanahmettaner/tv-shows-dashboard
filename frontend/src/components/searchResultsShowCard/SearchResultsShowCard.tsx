@@ -13,7 +13,7 @@ const SearchResultsShowCard: React.FC<SearchResultsShowCardProps> = ({ show }) =
                 <img src={show.image} alt={show.name} className={styles.showImage} />
                 <div className={styles.showDetails}>
                     <h2 className={styles.showName}>{show.name}</h2>
-                    <p className={styles.showYear}>{show.year}</p>
+                    <p className={styles.showYear}>{show.years}</p>
                     <p className={styles.showActors}>{show.actors}</p>
                     <p className={styles.showType}>{show.type}</p>
                 </div>

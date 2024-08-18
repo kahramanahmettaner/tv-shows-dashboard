@@ -3,6 +3,7 @@
     cursor: pointer;
     width: fit-content;
     border-radius: .5em;
+    z-index: 100;
 }
 
 .dropdown.active,

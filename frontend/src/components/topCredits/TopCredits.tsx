@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useShowDetailsStore } from "../../store/showDetailsStore"
 import { ICredits } from "../../types";
-import TopBox from "../topBox/TopBox";
-import Dropdown from "../dropdown/Dropdown";
+import TopBox from "../../componentsReusable/topBox/TopBox";
+import Dropdown from "../../componentsReusable/dropdown/Dropdown";
 
 const TopCredits = () => {
     
