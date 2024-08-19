@@ -39,33 +39,28 @@ const BarChartReusable = (props: Props) => {
   const minBarSize = minValue - 0.5;
 
   return (
-    <div className={styles['bar-chart-container']}>
-        <h3>{props.title}</h3>
+    <div className={styles.chart}>
+        <ResponsiveContainer width="99%" height={150}>
+            <BarChart width={150} height={40} data={props.chartData} >
+              
+              {/* Set width to 30 as a workaround to eliminate the gap between the YAxis labels and the chart bars. */}
+              {/* Related issue on GitHub: https://github.com/recharts/recharts/issues/2027 */}
+              <YAxis 
+                domain={[minBarSize, maxBarSize]} 
+                width={30}
+                tickFormatter={(value) => {
+                  if (value === 10) { return 10; }
+                  return value.toFixed(1)
+                }}
+              />
 
-        <div className={styles.chart}>
-            <ResponsiveContainer width="99%" height={150}>
-                <BarChart width={150} height={40} data={props.chartData} >
-                  
-                  {/* Set width to 30 as a workaround to eliminate the gap between the YAxis labels and the chart bars. */}
-                  {/* Related issue on GitHub: https://github.com/recharts/recharts/issues/2027 */}
-                  <YAxis 
-                    domain={[minBarSize, maxBarSize]} 
-                    width={30}
-                    tickFormatter={(value) => {
-                      if (value === 10) { return 10; }
-                      return value.toFixed(1)
-                    }}
-                  />
-
-                  <Tooltip 
-                      content={<CustomTooltip chartData={props.chartData} descriptionTitle={props.dataKey.replace(/_/g, ' ')}/>}
-                      cursor={{fillOpacity:'0.1'}}
-                  />
-                  <Bar dataKey={props.dataKey} fill={props.color} />
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
-
+              <Tooltip 
+                  content={<CustomTooltip chartData={props.chartData} descriptionTitle={props.dataKey.replace(/_/g, ' ')}/>}
+                  cursor={{fillOpacity:'0.1'}}
+              />
+              <Bar dataKey={props.dataKey} fill={props.color} />
+            </BarChart>
+        </ResponsiveContainer>
     </div>
   )
 }

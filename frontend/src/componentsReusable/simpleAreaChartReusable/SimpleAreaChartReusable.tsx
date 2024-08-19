@@ -39,50 +39,46 @@ const SimpleAreaChartReusable = ( props: Props ) => {
     const minBarSize = minValue - 0.5;
 
     return (
-        <div className={styles['simple-area-chart']}>
-            <h3>{props.title}</h3>
+        <div className={styles.chart} >
+            <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                width={500}
+                height={400}
+                data={props.chartData}
+                margin={{
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
+                }}
+                >
+                <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                <XAxis
+                    dataKey="index" 
+                    // tickFormatter={(_value, index) => (index + 1).toString()} // To display the index as a label (1-based index)
+                    tick={{ fill: '#AAA' }}
+                    tickLine={false}
+                    axisLine={{ stroke: '#8884d8' }}
+                />
 
-            <div className={styles.chart} >
-                <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                    width={500}
-                    height={400}
-                    data={props.chartData}
-                    margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0,
+                {/* Set width to 30 as a workaround to eliminate the gap between the YAxis labels and the chart bars. */}
+                {/* Related issue on GitHub: https://github.com/recharts/recharts/issues/2027 */}
+                <YAxis 
+                    domain={[minBarSize, maxBarSize]} 
+                    width={32}
+                    tickFormatter={(value) => {
+                        if (value === 10) { return 10; }
+                        return value.toFixed(1)
                     }}
-                    >
-                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                    <XAxis
-                        dataKey="index" 
-                        // tickFormatter={(_value, index) => (index + 1).toString()} // To display the index as a label (1-based index)
-                        tick={{ fill: '#AAA' }}
-                        tickLine={false}
-                        axisLine={{ stroke: '#8884d8' }}
-                    />
-
-                    {/* Set width to 30 as a workaround to eliminate the gap between the YAxis labels and the chart bars. */}
-                    {/* Related issue on GitHub: https://github.com/recharts/recharts/issues/2027 */}
-                    <YAxis 
-                        domain={[minBarSize, maxBarSize]} 
-                        width={32}
-                        tickFormatter={(value) => {
-                            if (value === 10) { return 10; }
-                            return value.toFixed(1)
-                        }}
-                    />
-                    
-                    <Tooltip 
-                      content={<CustomTooltip chartData={props.chartData} descriptionTitle={props.dataKey.replace(/_/g, ' ')}/>}
-                      cursor={{fillOpacity:'0.1'}}
-                    />    
-                    <Area type="monotone" dataKey={props.dataKey} stroke="#8884d8" fill="#8884d8" />
-                    </AreaChart>
-                </ResponsiveContainer>
-            </div>
+                />
+                
+                <Tooltip 
+                    content={<CustomTooltip chartData={props.chartData} descriptionTitle={props.dataKey.replace(/_/g, ' ')}/>}
+                    cursor={{fillOpacity:'0.1'}}
+                />    
+                <Area type="monotone" dataKey={props.dataKey} stroke="#8884d8" fill="#8884d8" />
+                </AreaChart>
+            </ResponsiveContainer>
         </div>
     )
 }

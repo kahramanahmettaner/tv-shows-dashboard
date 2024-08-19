@@ -1,11 +1,11 @@
-import styles from './barChartBox.module.css'
+import styles from './simpleAreaChartBox.module.css'
 import { useState } from "react";
-import BarChartReusable from "../../componentsReusable/barChartReusable/BarChartReusable";
 import Dropdown from "../../componentsReusable/dropdown/Dropdown";
 import { useShowDetailsStore } from "../../store/showDetailsStore"
 import { IEpisode } from "../../types";
+import SimpleAreaChartReusable from "../../componentsReusable/simpleAreaChartReusable/SimpleAreaChartReusable";
 
-const BarChartBox = () => {
+const SimpleAreaChartBox = () => {
 
     // Get episodes
     const { 
@@ -30,11 +30,11 @@ const BarChartBox = () => {
     } );
 
     categories = [
-        ...categories,
         {
             key: -1,
             title: 'All Episodes'
         },   
+        ...categories,
     ];
 
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -56,17 +56,20 @@ const BarChartBox = () => {
 
     // Adjust episodes
     // TODO: somehow season_number is not integer. but fix this and then use === here, instead ==
-    const episodesForBarChart = filteredEpisodes.map((episode) => ({
-        name: `Season ${episode.season_number} Episode ${episode.episode_number}`,
-        imdb_rating: episode.imdb_rating,
-    }));
+    const episodesForAreaChart = filteredEpisodes.map( episode => {
+        return { 
+        name: `Season ${episode.season_number} Episode ${episode.episode_number}`, 
+        imdb_rating: episode.imdb_rating  
+        }
+    })
 
-    const barChartData = {
+
+    const areaChartBoxData = {
         title: "",
         color: "#FF8042",
         dataKey: "imdb_rating",
-        chartData: episodesForBarChart
-    };
+        chartData: episodesForAreaChart
+      };
 
     return (
         <div className={styles.box}>
@@ -75,9 +78,9 @@ const BarChartBox = () => {
                 selectedIndex={selectedIndex}
                 setSelectedIndex={setSelectedIndex}
             />
-            <BarChartReusable {...barChartData} /> 
+            <SimpleAreaChartReusable {...areaChartBoxData} /> 
         </div>
     )
 }
 
-export default BarChartBox
+export default SimpleAreaChartBox
