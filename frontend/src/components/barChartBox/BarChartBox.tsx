@@ -62,7 +62,6 @@ const BarChartBox = () => {
     }));
 
     const barChartData = {
-        title: "",
         color: "#FF8042",
         dataKey: "imdb_rating",
         chartData: episodesForBarChart

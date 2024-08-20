@@ -2,7 +2,6 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import styles from './simpleAreaChartReusable.module.css'
 
 type Props = {
-    title:string;
     dataKey:string;
     chartData:object[];
 }

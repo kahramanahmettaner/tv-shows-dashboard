@@ -65,7 +65,6 @@ const SimpleAreaChartBox = () => {
 
 
     const areaChartBoxData = {
-        title: "",
         color: "#FF8042",
         dataKey: "imdb_rating",
         chartData: episodesForAreaChart

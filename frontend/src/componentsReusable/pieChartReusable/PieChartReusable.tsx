@@ -3,7 +3,6 @@ import React from 'react';
 import { ResponsiveContainer, PieChart, Pie, Tooltip } from 'recharts';
 
 type Props = {
-  title: string;
   chartData: {
       name: string;
       value: number;
@@ -37,14 +36,10 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, labelTitle, de
     return null;
   };
 
-const PieChartReusable: React.FC<Props> = ({ chartData, title, labelTitle, descriptionTitle }) => {
+const PieChartReusable: React.FC<Props> = ({ chartData, labelTitle, descriptionTitle }) => {
 
     return (
-      <div className={styles['pie-chart-box']}>
-
-        <h3>{title}</h3>
-
-        <div style={{ width: '100%', height: 300 }}>
+        <div className={styles.chart}>
           <ResponsiveContainer>
             <PieChart>
               <Pie dataKey="value" data={chartData} fill="#8884d8" label />
@@ -58,7 +53,6 @@ const PieChartReusable: React.FC<Props> = ({ chartData, title, labelTitle, descr
             </PieChart>
           </ResponsiveContainer>
         </div>
-      </div>
     );
 
 

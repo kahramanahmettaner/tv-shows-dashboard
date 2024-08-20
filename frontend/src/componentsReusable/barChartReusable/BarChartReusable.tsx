@@ -2,7 +2,6 @@ import styles from './barChartReusable.module.css'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, YAxis } from 'recharts'
 
 type Props = {
-    title:string;
     color:string;
     dataKey:string;
     chartData:object[];
@@ -40,7 +39,7 @@ const BarChartReusable = (props: Props) => {
 
   return (
     <div className={styles.chart}>
-        <ResponsiveContainer width="99%" height={150}>
+        <ResponsiveContainer width="99%" height="90%">
             <BarChart width={150} height={40} data={props.chartData} >
               
               {/* Set width to 30 as a workaround to eliminate the gap between the YAxis labels and the chart bars. */}

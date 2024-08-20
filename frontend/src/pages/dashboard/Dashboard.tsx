@@ -5,10 +5,10 @@ import { useShowDetailsStore } from '../../store/showDetailsStore'
 import TopEpisodes from '../../components/topEpisodes/TopEpisodes'
 import TopCredits from '../../components/topCredits/TopCredits'
 import ParentalGuide from '../../components/parentalGuide/ParentalGuide'
-import PieChartReusable from '../../componentsReusable/pieChartReusable/PieChartReusable'
 import ShowCard from '../../components/showCard/ShowCard'
 import BarChartBox from '../../components/barChartBox/BarChartBox'
 import SimpleAreaChartBox from '../../components/simpleAreChartBox/SimpleAreChartBox'
+import PieChartBox from '../../components/pieChartBox/PieChartBox'
 
 const Dashboard = () => {
 
@@ -24,30 +24,13 @@ const Dashboard = () => {
     );
   }
   
-  const { 
-    credits,
+  const {
     fetchShowData
   } = useShowDetailsStore( state => state )
 
   useEffect(() => {
     fetchShowData(imdb_id)
   }, [imdb_id])
-
-  const directorsSliced = credits.directors.slice(0, 5)
-  const directorsForPieChart = directorsSliced.map( director => {
-    return { 
-      name: director.name,
-      value: director.episodes_count
-    }
-  })
-
-  const pieChartBoxData = {
-    title: "Directors",
-    chartData: directorsForPieChart,
-    color: "#FF8042",
-    labelTitle: 'Director',
-    descriptionTitle: 'Directed Episodes Number'
-  };
 
   return (
     <div className={styles.dashboard}>
@@ -67,25 +50,21 @@ const Dashboard = () => {
         <TopCredits />
       </div>
       
-
-      
-      <div className={`${styles.box} ${styles.box2}`}>
-        <PieChartReusable {...pieChartBoxData} /> 
-      </div>
-
       <div className={`${styles.box} ${styles.box2}`}>
         <BarChartBox />
-      </div>
-
-            
-      <div className={`${styles.box} ${styles.box2}`}>
-        <ParentalGuide />
       </div>
 
       <div className={`${styles.box} ${styles.box2}`}>
         <SimpleAreaChartBox />
       </div>
-
+            
+      <div className={`${styles.box} ${styles.box2}`}>
+        <ParentalGuide />
+      </div>
+      
+      <div className={`${styles.box} ${styles.box2}`}>
+        <PieChartBox />
+      </div>
     </div>
   )
 }
