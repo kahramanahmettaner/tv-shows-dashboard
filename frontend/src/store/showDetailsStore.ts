@@ -61,6 +61,16 @@ export const useShowDetailsStore = create<ShowDetailsStore>((set, get) => ({
 
         get().resetState();
 
+        // Set loading flags true so that components can display loading content
+        set({
+            loadingShowInfo: true,
+            loadingShowDetails: true,
+            loadingEpisodes: true,
+            loadingCredits: true,
+            loadingParentalGuide: true,
+        })
+
+
         try {
             // Await fetchShowInfo as it provides necessary info for other functions
             await get().fetchShowInfo(imdb_id_input);

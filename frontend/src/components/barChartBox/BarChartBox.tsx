@@ -4,12 +4,14 @@ import BarChartReusable from "../../componentsReusable/barChartReusable/BarChart
 import Dropdown from "../../componentsReusable/dropdown/Dropdown";
 import { useShowDetailsStore } from "../../store/showDetailsStore"
 import { IEpisode } from "../../types";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const BarChartBox = () => {
 
     // Get episodes
     const { 
-        episodes
+        episodes, loadingEpisodes, errorMessageEpisodes
     } = useShowDetailsStore( state => state )
 
     // Clone episodes data
@@ -67,14 +69,46 @@ const BarChartBox = () => {
         chartData: episodesForBarChart
     };
 
-    return (
-        <div className={styles.box}>
+
+    const barChartBoxContent = (
+        <>
             <Dropdown
                 dropdownItems={categories.map(category => category.title)}
                 selectedIndex={selectedIndex}
                 setSelectedIndex={setSelectedIndex}
             />
             <BarChartReusable {...barChartData} /> 
+        </>
+    )
+
+    return (
+        <div className={styles.box}>
+        
+            { errorMessageEpisodes !== ''
+                ? <p>{errorMessageEpisodes}</p>
+                
+                : loadingEpisodes && (episodesForBarChart.length === 0) 
+                ?   <>
+                        <Dropdown
+                            dropdownItems={categories.map(category => category.title)}
+                            selectedIndex={selectedIndex}
+                            setSelectedIndex={setSelectedIndex}
+                        />
+                        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize: '2rem' }}/>
+                        </div>
+                    </>
+
+                : 
+                <>
+                    {
+                        loadingEpisodes &&
+                        <FontAwesomeIcon icon={faSpinner} spin style={{ position: 'absolute', top: '10px', right: '10px' }}/>
+                    }     
+                    {barChartBoxContent}
+                </>
+            }
+
         </div>
     )
 }
