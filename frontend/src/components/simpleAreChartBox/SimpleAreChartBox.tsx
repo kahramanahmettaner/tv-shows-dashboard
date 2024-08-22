@@ -4,12 +4,14 @@ import Dropdown from "../../componentsReusable/dropdown/Dropdown";
 import { useShowDetailsStore } from "../../store/showDetailsStore"
 import { IEpisode } from "../../types";
 import SimpleAreaChartReusable from "../../componentsReusable/simpleAreaChartReusable/SimpleAreaChartReusable";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const SimpleAreaChartBox = () => {
 
     // Get episodes
     const { 
-        episodes
+        episodes, loadingEpisodes, errorMessageEpisodes
     } = useShowDetailsStore( state => state )
 
     // Clone episodes data
@@ -69,15 +71,46 @@ const SimpleAreaChartBox = () => {
         dataKey: "imdb_rating",
         chartData: episodesForAreaChart
       };
+    
 
-    return (
-        <div className={styles.box}>
+    const simpleAreaChartBoxContent = (
+        <>
             <Dropdown
                 dropdownItems={categories.map(category => category.title)}
                 selectedIndex={selectedIndex}
                 setSelectedIndex={setSelectedIndex}
             />
-            <SimpleAreaChartReusable {...areaChartBoxData} /> 
+            <SimpleAreaChartReusable {...areaChartBoxData} />  
+        </>
+    )
+
+    return (
+        <div className={styles.box}>
+
+{ errorMessageEpisodes !== ''
+                ? <p>{errorMessageEpisodes}</p>
+                
+                : loadingEpisodes && (episodesForAreaChart.length === 0) 
+                ?   <>
+                        <Dropdown
+                            dropdownItems={categories.map(category => category.title)}
+                            selectedIndex={selectedIndex}
+                            setSelectedIndex={setSelectedIndex}
+                        />
+                        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize: '2rem' }}/>
+                        </div>
+                    </>
+
+                :
+                <>
+                    {
+                        loadingEpisodes &&
+                        <FontAwesomeIcon icon={faSpinner} spin style={{ position: 'absolute', top: '10px', right: '10px' }}/>
+                    }     
+                    {simpleAreaChartBoxContent}
+                </>
+            }
         </div>
     )
 }
