@@ -4,11 +4,13 @@ import Dropdown from "../../componentsReusable/dropdown/Dropdown";
 import PieChartReusable from "../../componentsReusable/pieChartReusable/PieChartReusable"
 import { useShowDetailsStore } from "../../store/showDetailsStore"
 import { ICredits } from "../../types";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const PieChartBox = () => {
 
     const { 
-        credits,
+        credits, loadingCredits, errorMessageCredits
     } = useShowDetailsStore( state => state )
 
     // Clone credits data
@@ -68,12 +70,32 @@ const PieChartBox = () => {
 
   return (
     <div className={styles.box}>
-        <Dropdown
-            dropdownItems={categories.map(category => category.title)}
-            selectedIndex={selectedIndex}
-            setSelectedIndex={setSelectedIndex}
-        />
-        <PieChartReusable {...pieChartBoxData} /> 
+        { errorMessageCredits !== ''
+            ? <p>{errorMessageCredits}</p>
+            
+            : loadingCredits === true
+            ?   <>
+                    <Dropdown
+                        dropdownItems={categories.map(category => category.title)}
+                        selectedIndex={selectedIndex}
+                        setSelectedIndex={setSelectedIndex}
+                    />
+                    <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize: '2rem' }}/>
+                    </div>
+                </>
+
+            :   <>
+                    <Dropdown
+                        dropdownItems={categories.map(category => category.title)}
+                        selectedIndex={selectedIndex}
+                        setSelectedIndex={setSelectedIndex}
+                    />
+                    <PieChartReusable {...pieChartBoxData} /> 
+                </>
+
+        }
+
     </div>
   )
 }
